@@ -12,7 +12,7 @@ public class CooldownVisualizer : MonoBehaviour
     [SerializeField] private CooldownTimerVisualizer COOLDOWN_TIMER_VISUALIZER;
     [SerializeField] private FeedbackVisualizer FEEDBACK_VISUALIZER;
 
-    [Header("쿨다운 수치 사전 설정")]
+    [Header("수치 사전 설정")]
     [SerializeField] private float _cooldownTime = 1.0f;
     public float CooldownTime => _cooldownTime;
 
@@ -40,6 +40,8 @@ public class CooldownVisualizer : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        _className = this.GetType().Name;
+        
         if (!CanExecute())
             return;
 

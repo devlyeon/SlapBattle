@@ -31,6 +31,8 @@ public class CooldownTimerVisualizer : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        _className = this.GetType().Name;
+
         if (!CanExecute())
             return;
 

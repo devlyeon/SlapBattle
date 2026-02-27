@@ -9,7 +9,7 @@ public class FeedbackVisualizer : MonoBehaviour
     [SerializeField] private UnityEvent ON_COMPLETE;
     [SerializeField] private CanvasGroup FEEDBACK_COVER_CANVASGROUP;
 
-    [Header("피드백 수치 사전 설정")]
+    [Header("수치 사전 설정")]
     [SerializeField] private float _feedbackInitialAlpha = 0.75f;
     [SerializeField] private float _feedbackTime = 0.25f;
     public float FeedbackTime => _feedbackTime;
@@ -34,6 +34,8 @@ public class FeedbackVisualizer : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        _className = this.GetType().Name;
+
         if (!CanExecute())
             return;
         

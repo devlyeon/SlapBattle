@@ -22,6 +22,8 @@ public abstract class HealthBarBase : MonoBehaviour
     /// </summary>
     public virtual void Initialize(float? maxHP)
     {
+        _className = this.GetType().Name;
+        
         if (!CanExecute())
             return;
             
@@ -29,7 +31,6 @@ public abstract class HealthBarBase : MonoBehaviour
             _maxHP = maxHP ?? _maxHP;
 
         _currentHP = _maxHP;
-        _className = this.GetType().Name;
     }
 
     public abstract void SetHpValue(float hpValue); // HP 값 설정하기
