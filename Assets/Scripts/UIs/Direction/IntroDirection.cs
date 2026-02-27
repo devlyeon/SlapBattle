@@ -5,6 +5,8 @@ using UnityEngine.Events;
 public class IntroDirection : MonoBehaviour
 {
     [Header("필수 사전 할당")]
+    [SerializeField] private UnityEvent ON_PLAY;
+    [SerializeField] private UnityEvent ON_COMPLETE;
     [SerializeField] private UnityEvent ON_ARE;
     [SerializeField] private UnityEvent ON_YOU;
     [SerializeField] private UnityEvent ON_READY;
@@ -59,6 +61,8 @@ public class IntroDirection : MonoBehaviour
         if (!CanExecute())
             return;
 
+        ON_PLAY.Invoke();
+        
         StartCoroutine(PlayIntroDirection());
     }
 
@@ -99,6 +103,8 @@ public class IntroDirection : MonoBehaviour
         LETSROCK_TEXT.Scale("Lerp", 0.1f, Vector3.one * 12.5f, new Vector3(20f, 1f, 1f));
         LETSROCK_TEXT.Alpha("Lerp", 0.1f, 1f, 0f);
         yield return new WaitForSeconds(0.1f);
+
+        ON_COMPLETE.Invoke();
 
         _isPlaying = false;
     }
