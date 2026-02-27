@@ -345,18 +345,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea61477b07ace34eb203ad1b1be248f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UICooldownChecker
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   COOLDOWN_COVER_IMAGE: {fileID: 466011712}
+  COOLDOWN_TIMER_VISUALIZER: {fileID: 1193526272}
   FEEDBACK_VISUALIZER: {fileID: 1750644249}
-  COOLDOWN_TEXT: {fileID: 1193526270}
-  COOLDOWN_TEXT_CANVASGROUP: {fileID: 1193526269}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalCooldownTime: 3
+  _cooldownTime: 1
   _isCooldown: 0
+  _isExclusive: 1
 --- !u!1 &38601477
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,6 +850,7 @@ GameObject:
   m_Component:
   - component: {fileID: 253204192}
   - component: {fileID: 253204195}
+  - component: {fileID: 253204196}
   - component: {fileID: 253204194}
   - component: {fileID: 253204193}
   m_Layer: 5
@@ -990,6 +991,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 253204191}
   m_CullTransparentMesh: 1
+--- !u!114 &253204196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253204191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973b572c90faac14496459dbfc5be39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CooldownTimerVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
+  COOLDOWN_TIMER_TEXT: {fileID: 253204194}
+  COOLDOWN_TIMER_TEXT_CANVASGROUP: {fileID: 253204193}
+  _isExclusive: 0
 --- !u!1 &281751698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,15 +1061,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a65d59d9474e646823f104abbac845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FeedbackVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   FEEDBACK_COVER_CANVASGROUP: {fileID: 348273360}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalFeedbackTime: 0.25
-  _isFeedback: 0
+  _feedbackInitialAlpha: 0.75
+  _feedbackTime: 0.25
+  _isExclusive: 0
 --- !u!1 &288583991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1513,7 +1536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   anotherPlayer: {fileID: 1462242287}
   playerSprite: {fileID: 385913223}
-  hpGage: {fileID: 0}
+  hpGage: {fileID: 1617962031}
   maxHp: 15
   anims:
     idle: {fileID: 0}
@@ -1881,6 +1904,7 @@ GameObject:
   m_Component:
   - component: {fileID: 622403941}
   - component: {fileID: 622403944}
+  - component: {fileID: 622403945}
   - component: {fileID: 622403943}
   - component: {fileID: 622403942}
   m_Layer: 5
@@ -2021,6 +2045,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 622403940}
   m_CullTransparentMesh: 1
+--- !u!114 &622403945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622403940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973b572c90faac14496459dbfc5be39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CooldownTimerVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
+  COOLDOWN_TIMER_TEXT: {fileID: 622403943}
+  COOLDOWN_TIMER_TEXT_CANVASGROUP: {fileID: 622403942}
+  _isExclusive: 0
 --- !u!1 &665455325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2246,15 +2291,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a65d59d9474e646823f104abbac845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FeedbackVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   FEEDBACK_COVER_CANVASGROUP: {fileID: 288583993}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalFeedbackTime: 0.25
-  _isFeedback: 0
+  _feedbackInitialAlpha: 0.75
+  _feedbackTime: 0.25
+  _isExclusive: 0
 --- !u!1 &745648683
 GameObject:
   m_ObjectHideFlags: 0
@@ -2858,15 +2904,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a65d59d9474e646823f104abbac845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FeedbackVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   FEEDBACK_COVER_CANVASGROUP: {fileID: 712078798}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalFeedbackTime: 0.25
-  _isFeedback: 0
+  _feedbackInitialAlpha: 0.75
+  _feedbackTime: 0.25
+  _isExclusive: 0
 --- !u!1 &929599650
 GameObject:
   m_ObjectHideFlags: 0
@@ -2920,18 +2967,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea61477b07ace34eb203ad1b1be248f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UICooldownChecker
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   COOLDOWN_COVER_IMAGE: {fileID: 500023004}
+  COOLDOWN_TIMER_VISUALIZER: {fileID: 253204196}
   FEEDBACK_VISUALIZER: {fileID: 1490469024}
-  COOLDOWN_TEXT: {fileID: 253204194}
-  COOLDOWN_TEXT_CANVASGROUP: {fileID: 253204193}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalCooldownTime: 3
+  _cooldownTime: 1
   _isCooldown: 0
+  _isExclusive: 1
 --- !u!1 &986188200
 GameObject:
   m_ObjectHideFlags: 0
@@ -3545,6 +3592,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1193526268}
   - component: {fileID: 1193526271}
+  - component: {fileID: 1193526272}
   - component: {fileID: 1193526270}
   - component: {fileID: 1193526269}
   m_Layer: 5
@@ -3685,6 +3733,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1193526267}
   m_CullTransparentMesh: 1
+--- !u!114 &1193526272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193526267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973b572c90faac14496459dbfc5be39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CooldownTimerVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
+  COOLDOWN_TIMER_TEXT: {fileID: 1193526270}
+  COOLDOWN_TIMER_TEXT_CANVASGROUP: {fileID: 1193526269}
+  _isExclusive: 0
 --- !u!1 &1213586478
 GameObject:
   m_ObjectHideFlags: 0
@@ -4346,7 +4415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   anotherPlayer: {fileID: 384654598}
   playerSprite: {fileID: 986188202}
-  hpGage: {fileID: 0}
+  hpGage: {fileID: 1772150981}
   maxHp: 15
   anims:
     idle: {fileID: 0}
@@ -4435,15 +4504,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a65d59d9474e646823f104abbac845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FeedbackVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   FEEDBACK_COVER_CANVASGROUP: {fileID: 665455327}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalFeedbackTime: 0.25
-  _isFeedback: 0
+  _feedbackInitialAlpha: 0.75
+  _feedbackTime: 0.25
+  _isExclusive: 0
 --- !u!1 &1498704166
 GameObject:
   m_ObjectHideFlags: 0
@@ -4637,6 +4707,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2084772070990605682, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
   m_PrefabInstance: {fileID: 1603681153}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1617962031 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6113769230254116328, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
+  m_PrefabInstance: {fileID: 1603681153}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1648715886
 GameObject:
   m_ObjectHideFlags: 0
@@ -4774,15 +4855,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a65d59d9474e646823f104abbac845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FeedbackVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   FEEDBACK_COVER_CANVASGROUP: {fileID: 1648715888}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalFeedbackTime: 0.25
-  _isFeedback: 0
+  _feedbackInitialAlpha: 0.75
+  _feedbackTime: 0.25
+  _isExclusive: 0
 --- !u!224 &1672764769
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4819,18 +4901,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea61477b07ace34eb203ad1b1be248f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UICooldownChecker
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   COOLDOWN_COVER_IMAGE: {fileID: 745648685}
+  COOLDOWN_TIMER_VISUALIZER: {fileID: 1835087741}
   FEEDBACK_VISUALIZER: {fileID: 281751700}
-  COOLDOWN_TEXT: {fileID: 1835087739}
-  COOLDOWN_TEXT_CANVASGROUP: {fileID: 1835087738}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalCooldownTime: 3
+  _cooldownTime: 1
   _isCooldown: 0
+  _isExclusive: 1
 --- !u!1 &1750644247
 GameObject:
   m_ObjectHideFlags: 0
@@ -4880,15 +4962,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56a65d59d9474e646823f104abbac845, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FeedbackVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   FEEDBACK_COVER_CANVASGROUP: {fileID: 306176049}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalFeedbackTime: 0.25
-  _isFeedback: 0
+  _feedbackInitialAlpha: 0.75
+  _feedbackTime: 0.25
+  _isExclusive: 0
 --- !u!1 &1765086678
 GameObject:
   m_ObjectHideFlags: 0
@@ -4918,18 +5001,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea61477b07ace34eb203ad1b1be248f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UICooldownChecker
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   COOLDOWN_COVER_IMAGE: {fileID: 68136432}
+  COOLDOWN_TIMER_VISUALIZER: {fileID: 1793847273}
   FEEDBACK_VISUALIZER: {fileID: 1666072958}
-  COOLDOWN_TEXT: {fileID: 1793847271}
-  COOLDOWN_TEXT_CANVASGROUP: {fileID: 1793847270}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalCooldownTime: 3
+  _cooldownTime: 1
   _isCooldown: 0
+  _isExclusive: 1
 --- !u!1 &1766163317
 GameObject:
   m_ObjectHideFlags: 0
@@ -4983,18 +5066,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea61477b07ace34eb203ad1b1be248f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UICooldownChecker
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   COOLDOWN_COVER_IMAGE: {fileID: 1213586480}
+  COOLDOWN_TIMER_VISUALIZER: {fileID: 1896938533}
   FEEDBACK_VISUALIZER: {fileID: 839418595}
-  COOLDOWN_TEXT: {fileID: 1896938531}
-  COOLDOWN_TEXT_CANVASGROUP: {fileID: 1896938530}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalCooldownTime: 3
+  _cooldownTime: 1
   _isCooldown: 0
+  _isExclusive: 1
+--- !u!114 &1772150981 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6113769230254116328, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
+  m_PrefabInstance: {fileID: 2539192706426532088}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1793847268
 GameObject:
   m_ObjectHideFlags: 0
@@ -5005,6 +5099,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1793847269}
   - component: {fileID: 1793847272}
+  - component: {fileID: 1793847273}
   - component: {fileID: 1793847271}
   - component: {fileID: 1793847270}
   m_Layer: 5
@@ -5145,6 +5240,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793847268}
   m_CullTransparentMesh: 1
+--- !u!114 &1793847273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793847268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973b572c90faac14496459dbfc5be39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CooldownTimerVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
+  COOLDOWN_TIMER_TEXT: {fileID: 1793847271}
+  COOLDOWN_TIMER_TEXT_CANVASGROUP: {fileID: 1793847270}
+  _isExclusive: 0
 --- !u!1 &1835087736
 GameObject:
   m_ObjectHideFlags: 0
@@ -5155,6 +5271,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1835087737}
   - component: {fileID: 1835087740}
+  - component: {fileID: 1835087741}
   - component: {fileID: 1835087739}
   - component: {fileID: 1835087738}
   m_Layer: 5
@@ -5295,6 +5412,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1835087736}
   m_CullTransparentMesh: 1
+--- !u!114 &1835087741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835087736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973b572c90faac14496459dbfc5be39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CooldownTimerVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
+  COOLDOWN_TIMER_TEXT: {fileID: 1835087739}
+  COOLDOWN_TIMER_TEXT_CANVASGROUP: {fileID: 1835087738}
+  _isExclusive: 0
 --- !u!1 &1879014001
 GameObject:
   m_ObjectHideFlags: 0
@@ -5380,6 +5518,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1896938529}
   - component: {fileID: 1896938532}
+  - component: {fileID: 1896938533}
   - component: {fileID: 1896938531}
   - component: {fileID: 1896938530}
   m_Layer: 5
@@ -5520,6 +5659,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1896938528}
   m_CullTransparentMesh: 1
+--- !u!114 &1896938533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896938528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 973b572c90faac14496459dbfc5be39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CooldownTimerVisualizer
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
+  COOLDOWN_TIMER_TEXT: {fileID: 1896938531}
+  COOLDOWN_TIMER_TEXT_CANVASGROUP: {fileID: 1896938530}
+  _isExclusive: 0
 --- !u!1 &1941953763
 GameObject:
   m_ObjectHideFlags: 0
@@ -5774,18 +5934,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea61477b07ace34eb203ad1b1be248f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UICooldownChecker
+  ON_PLAY:
+    m_PersistentCalls:
+      m_Calls: []
+  ON_COMPLETE:
+    m_PersistentCalls:
+      m_Calls: []
   COOLDOWN_COVER_IMAGE: {fileID: 1879014003}
+  COOLDOWN_TIMER_VISUALIZER: {fileID: 622403945}
   FEEDBACK_VISUALIZER: {fileID: 716944853}
-  COOLDOWN_TEXT: {fileID: 622403943}
-  COOLDOWN_TEXT_CANVASGROUP: {fileID: 622403942}
-  ON_PLAY_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  ON_COMPLETE_UNITYEVENT:
-    m_PersistentCalls:
-      m_Calls: []
-  _totalCooldownTime: 3
+  _cooldownTime: 1
   _isCooldown: 0
+  _isExclusive: 1
 --- !u!1001 &2539192706426532088
 PrefabInstance:
   m_ObjectHideFlags: 0

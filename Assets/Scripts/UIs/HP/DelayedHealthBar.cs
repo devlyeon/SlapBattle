@@ -6,7 +6,7 @@ public class DelayedHealthBar : HealthBarBase
     [Header("수치 사전 설정")]
     [SerializeField] private float _delayedTime = 0.25f;
     [SerializeField] private float _delayingSpeed = 0.25f;
-
+    
     private Coroutine _valueChangeAnimeCoroutine;
 
     private void Awake()
@@ -16,7 +16,7 @@ public class DelayedHealthBar : HealthBarBase
     }
 
     /// <summary>
-    /// HP 바에 수치를 바로 설정하는 함수
+    /// HP 바의 수치를 바로 설정하는 함수
     /// </summary>
     /// <param name="hpValue">설정하고 싶은 HP 값 (음수 X)</param>
     public override void SetHpValue(float hpValue)
@@ -46,7 +46,7 @@ public class DelayedHealthBar : HealthBarBase
         float initialHp = _currentHP;
         float resultHP = hpValue;
 
-        // 딜레이 연출 시작
+        // 딜레이 연출
         float timer = 0;
         while (timer < _delayingSpeed)
         {

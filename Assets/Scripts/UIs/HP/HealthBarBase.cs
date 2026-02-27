@@ -22,6 +22,9 @@ public abstract class HealthBarBase : MonoBehaviour
     /// </summary>
     public virtual void Initialize(float? maxHP)
     {
+        if (!CanExecute())
+            return;
+            
         if (maxHP != null)
             _maxHP = maxHP ?? _maxHP;
 
