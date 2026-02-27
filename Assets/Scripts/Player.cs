@@ -181,6 +181,8 @@ public class Player : MonoBehaviour
 
         // 그리고 남은 로직은 패배 플레이어 로직에서 처리
         // 이 스크립트 실행하는게 패배 플레이어
+        Countdown.gameStarted = false;
+
         outro.gameObject.SetActive(true);
         Debug.Log(playerId);
         if (playerId == 1)
