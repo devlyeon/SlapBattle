@@ -33,7 +33,7 @@ public class RandomTitleText : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(2.0f);
-            text.text = $"시작 [{Keyboard.current.allKeys[Random.Range(0, Keyboard.current.allKeys.Count - 1)].name.FirstCharacterToUpper()}]를 누르다";
+            text.text = $"시작 [{Keyboard.current.allKeys[Random.Range(0, Keyboard.current.allKeys.Count - 1)].name.FirstCharacterToUpper()} 키]를 누르다";
         }
     }
 

@@ -5,18 +5,20 @@ using UnityEngine.UI;
 public class PlayerSprite : MonoBehaviour
 {
     [Serializable]
-    public struct PlayerAnims
+    public struct PlayerSpritePreset
     {
-        public Sprite idle, parrying, dodge, attack;
+        public Sprite idle, damaged, knockout;
     }
 
-    [SerializeField] PlayerAnims anims;
+    [SerializeField] PlayerSpritePreset sprites;
 
     private Image playerImage;
+    private Animator animator;
 
     void Start()
     {
         if (gameObject.TryGetComponent(out Image image)) playerImage = image;
+        if (gameObject.TryGetComponent(out Animator animator)) this.animator = animator;
     }
 
     public void SetSprite(PlayerAction action)
@@ -24,19 +26,25 @@ public class PlayerSprite : MonoBehaviour
         switch (action)
         {
             case PlayerAction.NONE:
-                if (anims.idle != null) playerImage.sprite = anims.idle;
+                if (sprites.idle != null) playerImage.sprite = sprites.idle;
                 break;
             case PlayerAction.GUARD:
-                if (anims.parrying != null) playerImage.sprite = anims.parrying;
+                // animator.SetTrigger("Parrying");
                 break;
             case PlayerAction.AVOID:
-                if (anims.dodge != null) playerImage.sprite = anims.dodge;
+                // animator.SetTrigger("Dodge");
                 break;
             case PlayerAction.ATTACK:
-                if (anims.attack != null) playerImage.sprite = anims.attack;
+                animator.SetTrigger("Attack");
+                break;
+            case PlayerAction.DEFEAT:
+                // if (sprites.knockout != null) playerImage.sprite = sprites.knockout;
+                break;
+            case PlayerAction.WIN:
+                // if (anims.win != null) playerImage.sprite = anims.win;
                 break;
             default:
-                if (anims.idle != null) playerImage.sprite = anims.idle;
+                // if (anims.idle != null) playerImage.sprite = anims.idle;
                 break;
         }
     }
