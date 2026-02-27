@@ -1,97 +1,155 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
+public enum PlayerAction
+{
+    NONE = 0, GUARD = 1, AVOID = 2, ATTACK = 3
+}
 
 public class Player : MonoBehaviour
 {
+    [Serializable]
+    public struct PlayerAnims
+    {
+        public Sprite idle, parrying, dodge, attack;
+    }
+
     [SerializeField] private Player anotherPlayer;
+    [SerializeField] private PlayerSprite playerSprite;
+    [SerializeField] private Image hpGage;
+    [SerializeField] private int maxHp = 15;
+    [SerializeField] private PlayerAnims anims;
+    [SerializeField] private CooldownVisualizer guardCooldown, avoidCooldown, attackCooldown;
 
     private int guardCount = 0; // 방어 횟수
     private int avoidCount = 0; // 회피 횟수
     private int attackCount = 0; // 공격 횟수
     private int defeatCount = 0; // 맞은 횟수
+    private int currentHp = 0;
 
-    private bool isGuard = false;
-    private bool isAvoid = false, canAvoid = true;
-    private bool isAttack = false;
+    private PlayerAction currentAction = PlayerAction.NONE;
+    private bool canGuard = true, canAvoid = true, canAttack = true;
+    private Coroutine coroutine = null;
+
+    void Start()
+    {
+        currentHp = maxHp;
+    }
+
+    public PlayerAction GetPlayerAction() { return currentAction; }
+    public void SetPlayerAction(PlayerAction action) { currentAction = action; }
 
     /// <summary>
     /// 타인에게 데미지 입을 때 쓰는 함수
     /// </summary>
     public void TryDamagePlayer(int attack = 1)
     {
-        // 방어 / 회피 성공
-        if (isGuard)
+        // 패링 / 회피 성공
+        if (currentAction.Equals(PlayerAction.GUARD))
         {
-            isGuard = false;
-            anotherPlayer.TryDamagePlayer(2);
+
+            canGuard = true;
+            // 카운트 하는거 따로 추가하기
         }
-        else if (isAvoid)
+        else if (currentAction.Equals(PlayerAction.AVOID))
         {
+
+            canAvoid = true;
             if ((avoidCount % 10) == 0)
             {
-                canAvoid = false;
-                StartCoroutine(AvoidCoolTime(3.0f));
+                avoidCooldown.Play();
             }
         }
         // 맞았음
         else
         {
             defeatCount += attack;
+            currentHp -= attack;
             Debug.Log(gameObject.name + defeatCount.ToString());
+        }
+
+        if (currentHp <= 0)
+        {
+            // 상대 플레이어 승리!!
         }
     }
 
-    public bool GetIsGuard() { return isGuard; }
-    private bool GetIsAvoid() { return isAvoid; }
-
     void OnGuard(InputValue inputValue)
     {
-        isGuard = inputValue.isPressed;
-        if (isGuard) guardCount++;
+        if (!Countdown.gameStarted) return;
+        if (guardCooldown.IsCooldown) return;
+
+        // 현재 액션을 Guard로 지정
+        currentAction = PlayerAction.GUARD;
+        playerSprite.SetSprite(currentAction);
+
+        // 쿨타임 체크 및 애니메이션
+        canGuard = false;
+        coroutine = StartCoroutine(CanActionCoolTime());
+        guardCooldown.Play();
+
+        guardCount++;
     }
 
     void OnAvoid(InputValue inputValue)
     {
-        if (canAvoid) isAvoid = inputValue.isPressed;
-        if (isAvoid) {
-            avoidCount++;
-            StartCoroutine(AvoidTimeOver());
-        }
+        if (!Countdown.gameStarted) return;
+        if (avoidCooldown.IsCooldown) return;
+
+        // 현재 액션을 Avoid로 지정
+        currentAction = PlayerAction.AVOID;
+        playerSprite.SetSprite(currentAction);
+
+        // 쿨타임 체크 및 애니메이션
+        canAvoid = false;
+        coroutine = StartCoroutine(CanActionCoolTime());
+        avoidCooldown.Play();
+
+
+        avoidCount++;
     }
 
     void OnAttack(InputValue inputValue)
     {
-        isAttack = inputValue.isPressed;
-        if (isAttack) {
-            attackCount++;
-            anotherPlayer.TryDamagePlayer();
-        }
+        if (!Countdown.gameStarted) return;
+        if (attackCooldown.IsCooldown) return;
+
+        // 현재 액션을 Attack으로 지정
+        currentAction = PlayerAction.ATTACK;
+        anotherPlayer.TryDamagePlayer(1);
+        playerSprite.SetSprite(currentAction);
+
+        // 동작을 1.0초동안 실행
+        coroutine = StartCoroutine(CanActionCoolTime());
+        attackCooldown.Play();
+
+        attackCount++;
     }
 
-    IEnumerator AvoidTimeOver()
+    /// <summary>
+    /// 일정 시간 이후 Action의 상태를 변경합니다.
+    /// </summary>
+    /// <param name="coolTime"></param>
+    IEnumerator CanActionCoolTime()
     {
         yield return new WaitForSeconds(1.0f);
-        isAvoid = false;
-    }
-
-    IEnumerator AvoidCoolTime(float coolTime)
-    {
-        yield return new WaitForSeconds(coolTime);
-        canAvoid = true;
+        currentAction = PlayerAction.NONE;
+        playerSprite.SetSprite(currentAction);
     }
 
     void Update()
     {
-        if (isGuard)
+        if (currentAction != PlayerAction.NONE)
         {
-            // 가드 이미지
-            Debug.Log("가드" + gameObject.name);
+            Debug.Log(gameObject.name + ": " + currentAction);
         }
-        else if (isAvoid)
-        {
-            // 회피 이미지
-            Debug.Log("회피" + gameObject.name);
-        }
+    }
+
+    void FixedUpdate()
+    {
+        hpGage.fillAmount = (float)(currentHp / (float)maxHp);
     }
 }
