@@ -7,7 +7,7 @@ public class PlayerSprite : MonoBehaviour
     [Serializable]
     public struct PlayerAnims
     {
-        public Sprite idle, parrying, dodge, attack;
+        public Sprite idle, parrying, dodge, attack, defeat, win;
     }
 
     [SerializeField] PlayerAnims anims;
@@ -34,6 +34,12 @@ public class PlayerSprite : MonoBehaviour
                 break;
             case PlayerAction.ATTACK:
                 if (anims.attack != null) playerImage.sprite = anims.attack;
+                break;
+            case PlayerAction.DEFEAT:
+                if (anims.defeat != null) playerImage.sprite = anims.defeat;
+                break;
+            case PlayerAction.WIN:
+                if (anims.win != null) playerImage.sprite = anims.win;
                 break;
             default:
                 if (anims.idle != null) playerImage.sprite = anims.idle;
