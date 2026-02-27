@@ -23,7 +23,11 @@ public class InstantHelathBar : HealthBarBase
             return;
         }
 
+        ON_PLAY.Invoke();
+
         _currentHP = hpValue;
         HP_BAR_IMAGE.fillAmount = NormalizeToRange(_currentHP);
+
+        ON_COMPLETE.Invoke();
     }
 }

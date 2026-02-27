@@ -29,6 +29,8 @@ public class DelayedHealthBar : HealthBarBase
             Debug.LogError($"{_className}: hpValue는 음수가 될 수 없습니다!");
             return;
         }
+        
+        ON_PLAY.Invoke();
 
         if (_valueChangeAnimeCoroutine != null)
             StopCoroutine(_valueChangeAnimeCoroutine);
@@ -62,5 +64,7 @@ public class DelayedHealthBar : HealthBarBase
         // 마지막 값 보정
         _currentHP = resultHP;
         HP_BAR_IMAGE.fillAmount = NormalizeToRange(_currentHP);
+
+        ON_COMPLETE.Invoke();
     }
 }

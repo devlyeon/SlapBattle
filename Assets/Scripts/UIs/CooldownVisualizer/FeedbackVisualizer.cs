@@ -5,11 +5,9 @@ using UnityEngine.Events;
 public class FeedbackVisualizer : MonoBehaviour
 {
     [Header("필수 사전 할당")]
+    [SerializeField] private UnityEvent ON_PLAY;
+    [SerializeField] private UnityEvent ON_COMPLETE;
     [SerializeField] private CanvasGroup FEEDBACK_COVER_CANVASGROUP;
-
-    [Header("유니티 이벤트 시스템")]
-    [SerializeField] private UnityEvent ON_PLAY_UNITYEVENT;
-    [SerializeField] private UnityEvent ON_COMPLETE_UNITYEVENT;
 
     [Header("피드백 수치 사전 설정")]
     [SerializeField] private float _totalFeedbackTime = 1.0f;
@@ -59,7 +57,7 @@ public class FeedbackVisualizer : MonoBehaviour
     {
         // 연출 시작
         _isFeedback = true;
-        ON_PLAY_UNITYEVENT.Invoke();
+        ON_PLAY.Invoke();
         FEEDBACK_COVER_CANVASGROUP.alpha = 0.75f;
 
         // 연출 시간 돌리기 1
@@ -72,7 +70,7 @@ public class FeedbackVisualizer : MonoBehaviour
         }
 
         // 연출 초기화
-        ON_COMPLETE_UNITYEVENT.Invoke();
+        ON_COMPLETE.Invoke();
         FEEDBACK_COVER_CANVASGROUP.alpha = 0f;
         this.Reset();
     }
