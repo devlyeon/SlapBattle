@@ -3,8 +3,8 @@ using TMPro;
 using UnityEngine;
 
 public class Countdown : MonoBehaviour
-{
-    [SerializeField] Timer timer;
+{    
+    public static bool gameStarted = false;
     private Animator animator;
     private TMP_Text text;
     private int time = 3;
@@ -32,7 +32,7 @@ public class Countdown : MonoBehaviour
         
         text.text = "START!!!";
         animator.SetTrigger("Start");
-        yield return new WaitForSeconds(1.0f);
-        timer.StartTimer();
+        yield return new WaitForSeconds(0.2f);
+        gameStarted = true;
     }
 }

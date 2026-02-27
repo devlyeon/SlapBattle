@@ -8,27 +8,27 @@
             "actions": [
                 {
                     "name": "Guard",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "150e60b9-9c9a-4f43-a1a4-fb7ec0371b7a",
-                    "expectedControlType": "Key",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Avoid",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "1298b25b-e306-4ab4-a5f2-68038caf754a",
-                    "expectedControlType": "Key",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Attack",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "6e1717f5-871f-48b2-a7fc-aa0298db0b59",
-                    "expectedControlType": "Key",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -38,7 +38,7 @@
                 {
                     "name": "",
                     "id": "cdaaef49-467f-42f7-ac1d-10858cde030f",
-                    "path": "<Keyboard>/a",
+                    "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -60,7 +60,7 @@
                 {
                     "name": "",
                     "id": "ac1bd48f-5068-465d-b36c-cb6a60e9e5c6",
-                    "path": "<Keyboard>/d",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -76,27 +76,27 @@
             "actions": [
                 {
                     "name": "Guard",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "60c06639-692d-4b31-8ee0-f92255cc723a",
-                    "expectedControlType": "Key",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Avoid",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "81f70ca6-8a69-49eb-a525-4f9ae439bfc6",
-                    "expectedControlType": "Key",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
                     "name": "Attack",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "d2675410-6a47-4282-b584-972194011a7a",
-                    "expectedControlType": "Key",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
