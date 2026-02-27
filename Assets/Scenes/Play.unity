@@ -1248,17 +1248,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
---- !u!114 &233475638 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6113769230254116328, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
-  m_PrefabInstance: {fileID: 233475637}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!224 &233475639 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2084772070990605682, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
@@ -1657,8 +1646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   anotherPlayer: {fileID: 1682146634}
   playerSprite: {fileID: 576731197}
-  hpGage: {fileID: 233475638}
-  maxHp: 15
+  health: {fileID: 1423873649}
   anims:
     idle: {fileID: 0}
     parrying: {fileID: 0}
@@ -2085,6 +2073,8 @@ MonoBehaviour:
     parrying: {fileID: 0}
     dodge: {fileID: 0}
     attack: {fileID: 0}
+    defeat: {fileID: 0}
+    win: {fileID: 0}
 --- !u!114 &576731198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3761,6 +3751,8 @@ MonoBehaviour:
     parrying: {fileID: 0}
     dodge: {fileID: 0}
     attack: {fileID: 21300000, guid: 55b8740fa2ebb4340b0277a4be1e3476, type: 3}
+    defeat: {fileID: 0}
+    win: {fileID: 0}
 --- !u!114 &1081980043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4887,6 +4879,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1423241590}
   m_CullTransparentMesh: 1
+--- !u!114 &1423873649 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2924240340534274212, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
+  m_PrefabInstance: {fileID: 233475637}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 730a0f89fe0fa8a4b89a369525ca84d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthBarHandler
 --- !u!1 &1439970106
 GameObject:
   m_ObjectHideFlags: 0
@@ -5550,8 +5553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   anotherPlayer: {fileID: 455922683}
   playerSprite: {fileID: 1081980042}
-  hpGage: {fileID: 2092111709}
-  maxHp: 15
+  health: {fileID: 2092111713}
   anims:
     idle: {fileID: 0}
     parrying: {fileID: 0}
@@ -6607,17 +6609,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2084772070990605682, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
   m_PrefabInstance: {fileID: 2092111707}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2092111709 stripped
+--- !u!114 &2092111713 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6113769230254116328, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2924240340534274212, guid: 6ab6c0f1680ac054980f7ac2c5925d56, type: 3}
   m_PrefabInstance: {fileID: 2092111707}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 730a0f89fe0fa8a4b89a369525ca84d6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_EditorClassIdentifier: Assembly-CSharp::HealthBarHandler
 --- !u!1 &2099496155
 GameObject:
   m_ObjectHideFlags: 0
