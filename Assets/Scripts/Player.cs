@@ -10,17 +10,13 @@ public enum PlayerAction
 
 public class Player : MonoBehaviour
 {
-    [Serializable]
-    public struct PlayerAnims
-    {
-        public Sprite idle, parrying, dodge, attack;
-    }
-
+    
+    [SerializeField] private int playerId = 0;
     [SerializeField] private Player anotherPlayer;
     [SerializeField] private PlayerSprite playerSprite;
     [SerializeField] private HealthBarHandler health;
-    [SerializeField] private PlayerAnims anims;
     [SerializeField] private CooldownVisualizer guardCooldown, avoidCooldown, attackCooldown;
+    [SerializeField] private OutroDirection outro;
 
     private int maxHp = 100, currentHp = 100;
 
@@ -184,6 +180,16 @@ public class Player : MonoBehaviour
         playerSprite.SetSprite(currentAction);
 
         // 그리고 남은 로직은 패배 플레이어 로직에서 처리
-        
+        // 이 스크립트 실행하는게 패배 플레이어
+        outro.gameObject.SetActive(true);
+        Debug.Log(playerId);
+        if (playerId == 1)
+        {
+            outro.Play(PlayerResult.PLAYER_B);
+        }
+        else if (playerId == 2)
+        {
+            outro.Play(PlayerResult.PLAYER_A);
+        }
     }
 }
