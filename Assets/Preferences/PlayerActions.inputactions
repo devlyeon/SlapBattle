@@ -7,7 +7,7 @@
             "id": "f3672f29-92b8-416c-a6da-a9981e34f23a",
             "actions": [
                 {
-                    "name": "Guard",
+                    "name": "Parrying",
                     "type": "Button",
                     "id": "150e60b9-9c9a-4f43-a1a4-fb7ec0371b7a",
                     "expectedControlType": "",
@@ -16,7 +16,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Avoid",
+                    "name": "Dodge",
                     "type": "Button",
                     "id": "1298b25b-e306-4ab4-a5f2-68038caf754a",
                     "expectedControlType": "",
@@ -42,7 +42,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Guard",
+                    "action": "Parrying",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -53,7 +53,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Avoid",
+                    "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -75,7 +75,7 @@
             "id": "ea4d09db-23d4-426b-a8e9-50a41b973c3a",
             "actions": [
                 {
-                    "name": "Guard",
+                    "name": "Parrying",
                     "type": "Button",
                     "id": "60c06639-692d-4b31-8ee0-f92255cc723a",
                     "expectedControlType": "",
@@ -84,7 +84,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Avoid",
+                    "name": "Dodge",
                     "type": "Button",
                     "id": "81f70ca6-8a69-49eb-a525-4f9ae439bfc6",
                     "expectedControlType": "",
@@ -110,7 +110,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Guard",
+                    "action": "Parrying",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -121,7 +121,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Avoid",
+                    "action": "Dodge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

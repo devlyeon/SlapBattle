@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class RandomTitleText : MonoBehaviour
 {
-    [SerializeField] Countdown countdown;
+    [SerializeField] IntroDirection intro;
     [SerializeField] Animator animator;
 
     private Coroutine coroutine;
@@ -40,6 +40,6 @@ public class RandomTitleText : MonoBehaviour
     IEnumerator StartGame()
     {
         yield return new WaitForSeconds(1.0f);
-        countdown.gameObject.SetActive(true);
+        intro.gameObject.SetActive(true);
     }
 }
