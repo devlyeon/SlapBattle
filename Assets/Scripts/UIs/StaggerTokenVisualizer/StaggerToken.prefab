@@ -55,7 +55,7 @@ MonoBehaviour:
   ON_COMPLETE:
     m_PersistentCalls:
       m_Calls: []
-  STRAGGER_TOKEN: {fileID: 0}
+  STRAGGER_TOKEN: {fileID: 6198599147635038096, guid: fbcd4df1eac06bc40a9ae0191a406f2c, type: 3}
 --- !u!114 &8332123433975732656
 MonoBehaviour:
   m_ObjectHideFlags: 0
