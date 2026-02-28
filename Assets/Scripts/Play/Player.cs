@@ -17,6 +17,12 @@ public class Player : MonoBehaviour
     {
         public CooldownVisualizer parrying, dodge, attack;
     }
+
+    [Serializable]
+    public struct CutSceneForWin
+    {
+        public Image aWin, bWin;
+    }
     
     [Header("Player Components")]
     [Tooltip("플레이어 구분을 위한 ID입니다. A는 1, B는 2로 설정해주시기 바랍니다.")]
@@ -33,6 +39,8 @@ public class Player : MonoBehaviour
     [Header("Another Object Components")]
     [Tooltip("다른 Player class의 function을 호출하기 위한 Player class입니다.")]
     [SerializeField] private Player anotherPlayer;
+    [Tooltip("게임 결과를 표시하기 위한 Player class입니다.")]
+    [SerializeField] private CutSceneForWin cutSceneForWin;
     [Tooltip("게임 결과를 표시하기 위한 OutroDirection class입니다.")]
     [SerializeField] private OutroDirection outro;
 
@@ -54,8 +62,6 @@ public class Player : MonoBehaviour
     {
         stagger.BreakShieldValue(1);
     }
-
-    public bool GetIsAttack() { return actionChecker[(int)PlayerAction.ATTACK]; }
 
     /// <summary>
     /// 타인에게 데미지 입을 때 쓰는 함수
@@ -126,12 +132,7 @@ public class Player : MonoBehaviour
     {
         if (!GameManager.gameStarted) return;
         if (cooldownPreset.attack.IsCooldown) return;
-        if (anotherPlayer.GetIsAttack()) {
-            actionChecker[(int)PlayerAction.ATTACK] = false;
-            coroutine = StartCoroutine(CanActionCoolTime(PlayerAction.ATTACK));
-            cooldownPreset.attack.Play();
-            return;
-        }
+        if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
 
         SetAction(PlayerAction.ATTACK);
         gameObject.GetComponent<Image>().canvas.sortingOrder = 1;
@@ -195,8 +196,14 @@ public class Player : MonoBehaviour
 
         outro.gameObject.SetActive(true);
         if (playerId == 1)
-            outro.Play(PlayerResult.PLAYER_B);
+        {
+            //outro.Play(PlayerResult.PLAYER_B);
+            cutSceneForWin.bWin.gameObject.SetActive(true);
+        }
         else if (playerId == 2)
-            outro.Play(PlayerResult.PLAYER_A);
+        {
+            //outro.Play(PlayerResult.PLAYER_A);
+            cutSceneForWin.aWin.gameObject.SetActive(true);
+        }
     }
 }
