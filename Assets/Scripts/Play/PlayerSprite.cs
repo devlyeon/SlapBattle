@@ -28,10 +28,10 @@ public class PlayerSprite : MonoBehaviour
             case PlayerAction.NONE:
                 if (sprites.idle != null) playerImage.sprite = sprites.idle;
                 break;
-            case PlayerAction.GUARD:
+            case PlayerAction.PARRYING:
                 // animator.SetTrigger("Parrying");
                 break;
-            case PlayerAction.AVOID:
+            case PlayerAction.DODGE:
                 // animator.SetTrigger("Dodge");
                 break;
             case PlayerAction.ATTACK:
