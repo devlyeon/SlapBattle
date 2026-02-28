@@ -5,10 +5,11 @@ public class HealthBarHandler : MonoBehaviour
     [Header("필수 사전 할당")]
     [SerializeField] private DelayedHealthBar DELAYED_HEALTH_BAR;
     [SerializeField] private InstantHelathBar INSTANT_HEALTH_BAR;
+    [SerializeField] private Player PLAYER;
 
     [Header("수치 사전 설정")]
-    [SerializeField] private float _maxHP = 100f;
-    [SerializeField] private float _currentHP = 100f;
+    private float _maxHP = 100f;
+    private float _currentHP = 100f;
 
     [Header("디버깅")]
     protected string _className;
@@ -26,6 +27,7 @@ public class HealthBarHandler : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        _maxHP = PLAYER.MaxHp;
         _currentHP = _maxHP;
         _className = this.GetType().Name;
     }

@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
 
     private int maxHp = 100, currentHp = 100;
 
+    public int MaxHp => maxHp;
+
     private int guardCount = 0; // 방어 횟수
     private int avoidCount = 0; // 회피 횟수
     private int attackCount = 0; // 공격 횟수
@@ -79,6 +81,7 @@ public class Player : MonoBehaviour
         else
         {
             defeatCount++;
+            currentHp -= attack;
             health.SubstractHpValue(attack);
         }
 
