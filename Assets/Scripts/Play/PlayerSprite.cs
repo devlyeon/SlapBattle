@@ -32,10 +32,13 @@ public class PlayerSprite : MonoBehaviour
                 // animator.SetTrigger("Parrying");
                 break;
             case PlayerAction.DODGE:
-                // animator.SetTrigger("Dodge");
+                animator.SetTrigger("Dodge");
                 break;
             case PlayerAction.ATTACK:
                 animator.SetTrigger("Attack");
+                break;
+            case PlayerAction.KNOCKBACK:
+                animator.SetTrigger("Damaged");
                 break;
             case PlayerAction.DEFEAT:
                 // if (sprites.knockout != null) playerImage.sprite = sprites.knockout;

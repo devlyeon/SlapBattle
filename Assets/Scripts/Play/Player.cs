@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public enum PlayerAction
 {
@@ -16,6 +17,12 @@ public class Player : MonoBehaviour
     {
         public CooldownVisualizer parrying, dodge, attack;
     }
+
+    [Serializable]
+    public struct CutSceneForWin
+    {
+        public Image aWin, bWin;
+    }
     
     [Header("Player Components")]
     [Tooltip("플레이어 구분을 위한 ID입니다. A는 1, B는 2로 설정해주시기 바랍니다.")]
@@ -24,12 +31,16 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerSprite playerSprite;
     [Tooltip("플레이어 체력 표시를 위한 HealthBarHandler class입니다.")]
     [SerializeField] private HealthBarHandler health;
+    [Tooltip("플레이어 패링 피드백을 위한 StaggerTokenVisualizer Preset입니다.")]
+    [SerializeField] private StaggerTokenVisualizer stagger;
     [Tooltip("플레이어 동작 피드백을 위한 CooldownVisualizer Preset입니다.")]
     [SerializeField] private CooldownPreset cooldownPreset;
 
     [Header("Another Object Components")]
     [Tooltip("다른 Player class의 function을 호출하기 위한 Player class입니다.")]
     [SerializeField] private Player anotherPlayer;
+    [Tooltip("게임 결과를 표시하기 위한 Player class입니다.")]
+    [SerializeField] private CutSceneForWin cutSceneForWin;
     [Tooltip("게임 결과를 표시하기 위한 OutroDirection class입니다.")]
     [SerializeField] private OutroDirection outro;
 
@@ -45,6 +56,12 @@ public class Player : MonoBehaviour
     private bool[] actionChecker = { true, true, true }; // Parrying, Dodge, Attack -> PlayerAction과 동일
     private int[] actionCounter = { 0, 0, 0, 0 }; // Parrying, Dodge, Attack, Knockback -> PlayerAction과 동일
     private Coroutine coroutine = null;
+
+    // 패링으로 인한 공격 실패 피드백
+    public void BreakStagger()
+    {
+        stagger.BreakShieldValue(1);
+    }
 
     /// <summary>
     /// 타인에게 데미지 입을 때 쓰는 함수
@@ -66,6 +83,7 @@ public class Player : MonoBehaviour
         if (currentAction.Equals(PlayerAction.PARRYING))
         {
             actionChecker[(int)PlayerAction.PARRYING] = true;
+            anotherPlayer.BreakStagger();
             if (++actionCounter[(int)PlayerAction.PARRYING] >= 3)
                 anotherPlayer.TryDamagePlayer(100, true);
         }
@@ -82,6 +100,7 @@ public class Player : MonoBehaviour
         // 맞았음
         else
         {
+            playerSprite.SetSprite(PlayerAction.KNOCKBACK);
             actionCounter[(int)PlayerAction.KNOCKBACK]++;
             currentHp -= damage;
             health.SubstractHpValue(damage);
@@ -113,8 +132,12 @@ public class Player : MonoBehaviour
     {
         if (!GameManager.gameStarted) return;
         if (cooldownPreset.attack.IsCooldown) return;
-        anotherPlayer.TryDamagePlayer();
+        if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
+
         SetAction(PlayerAction.ATTACK);
+        gameObject.GetComponent<Image>().canvas.sortingOrder = 1;
+        anotherPlayer.gameObject.GetComponent<Image>().canvas.sortingOrder = 0;
+        anotherPlayer.TryDamagePlayer();
     }
 
     void SetAction(PlayerAction action)
@@ -129,7 +152,7 @@ public class Player : MonoBehaviour
 
         // 쿨타임 체크 및 애니메이션
         actionChecker[(int)action] = false;
-        coroutine = StartCoroutine(CanActionCoolTime());
+        coroutine = StartCoroutine(CanActionCoolTime(action));
         switch (action)
         {
             case PlayerAction.PARRYING:
@@ -147,10 +170,11 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 일정 시간 이후 Action의 상태를 변경합니다.
     /// </summary>
-    IEnumerator CanActionCoolTime()
+    IEnumerator CanActionCoolTime(PlayerAction action)
     {
         yield return new WaitForSeconds(1.0f);
         currentAction = PlayerAction.NONE;
+        actionChecker[(int)action] = true;
         playerSprite.SetSprite(currentAction);
         coroutine = null;
     }
@@ -171,14 +195,15 @@ public class Player : MonoBehaviour
         GameManager.gameStarted = false;
 
         outro.gameObject.SetActive(true);
-        Debug.Log(playerId);
         if (playerId == 1)
         {
-            outro.Play(PlayerResult.PLAYER_B);
+            //outro.Play(PlayerResult.PLAYER_B);
+            cutSceneForWin.bWin.gameObject.SetActive(true);
         }
         else if (playerId == 2)
         {
-            outro.Play(PlayerResult.PLAYER_A);
+            //outro.Play(PlayerResult.PLAYER_A);
+            cutSceneForWin.aWin.gameObject.SetActive(true);
         }
     }
 }
