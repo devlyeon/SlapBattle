@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerSprite playerSprite;
     [Tooltip("플레이어 체력 표시를 위한 HealthBarHandler class입니다.")]
     [SerializeField] private HealthBarHandler health;
+    [Tooltip("플레이어 패링 피드백을 위한 StaggerTokenVisualizer Preset입니다.")]
+    [SerializeField] private StaggerTokenVisualizer stagger;
     [Tooltip("플레이어 동작 피드백을 위한 CooldownVisualizer Preset입니다.")]
     [SerializeField] private CooldownPreset cooldownPreset;
 
@@ -46,6 +48,12 @@ public class Player : MonoBehaviour
     private int[] actionCounter = { 0, 0, 0, 0 }; // Parrying, Dodge, Attack, Knockback -> PlayerAction과 동일
     private Coroutine coroutine = null;
 
+    // 패링으로 인한 공격 실패 피드백
+    public void BreakStagger()
+    {
+        stagger.BreakShieldValue(1);
+    }
+
     /// <summary>
     /// 타인에게 데미지 입을 때 쓰는 함수
     /// </summary>
@@ -66,6 +74,7 @@ public class Player : MonoBehaviour
         if (currentAction.Equals(PlayerAction.PARRYING))
         {
             actionChecker[(int)PlayerAction.PARRYING] = true;
+            anotherPlayer.BreakStagger();
             if (++actionCounter[(int)PlayerAction.PARRYING] >= 3)
                 anotherPlayer.TryDamagePlayer(100, true);
         }
@@ -171,14 +180,9 @@ public class Player : MonoBehaviour
         GameManager.gameStarted = false;
 
         outro.gameObject.SetActive(true);
-        Debug.Log(playerId);
         if (playerId == 1)
-        {
             outro.Play(PlayerResult.PLAYER_B);
-        }
         else if (playerId == 2)
-        {
             outro.Play(PlayerResult.PLAYER_A);
-        }
     }
 }

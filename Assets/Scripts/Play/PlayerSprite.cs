@@ -37,6 +37,9 @@ public class PlayerSprite : MonoBehaviour
             case PlayerAction.ATTACK:
                 animator.SetTrigger("Attack");
                 break;
+            case PlayerAction.KNOCKBACK:
+                // animator.SetTrigger("Knockback");
+                break;
             case PlayerAction.DEFEAT:
                 // if (sprites.knockout != null) playerImage.sprite = sprites.knockout;
                 break;

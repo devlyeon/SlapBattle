@@ -37,12 +37,6 @@ public class OutroDirection : MonoBehaviour
         this.Initialize();
     }
 
-    private void Start()
-    {
-        if (CanExecute())
-            this.Play(PlayerResult.PLAYER_B);
-    }
-
     /// <summary>
     /// 이 클래스 내부의 변수들을 초기화
     /// </summary>
@@ -71,13 +65,11 @@ public class OutroDirection : MonoBehaviour
 
         ON_PLAY.Invoke();
 
-        if (result == PlayerResult.PLAYER_A)
+        if (result.Equals(PlayerResult.PLAYER_A))
             StartCoroutine(PlayerAOutroDirection());
-
-        if (result == PlayerResult.PLAYER_B)
+        else if (result.Equals(PlayerResult.PLAYER_B))
             StartCoroutine(PlayerBOutroDirection());
-
-        if (result == PlayerResult.DRAW)
+        else if (result.Equals(PlayerResult.DRAW))
             StartCoroutine(PlayerAOutroDirection());
     }
 
