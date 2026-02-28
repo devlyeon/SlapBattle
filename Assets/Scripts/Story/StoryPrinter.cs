@@ -17,6 +17,11 @@ public class StoryPrinter : MonoBehaviour
     private int currentPosition = 0;
     private bool isPrinting = false, isFinish = false;
 
+    void Update()
+    {
+        
+    }
+
     public int GetStoryCount() { return data.Count; }
     public void SetStory(List<string> data) { this.data = data; }
     public bool GetIsFinish() { return isFinish; }

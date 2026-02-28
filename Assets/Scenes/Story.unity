@@ -306,11 +306,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18c40f574abf94dae8155637ae36a351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoryPrinter
-  scriptText: {fileID: 0}
+  scriptText: {fileID: 519998623}
   data:
   - "\uD5D8\uB09C\uD55C \uC785\uC2DC\uB97C \uAC70\uCCD0 \uC11C\uC131\uD55C\uC758
-    \uC790\uB791 \uD55C\uC131\uB300\uC5D0 \uC785\uD559\uD55C \uC0C1\uC0C1\uC774\uC640
-    \uCC3D\uC758..."
+    \uC790\uB791 \uD55C\uC131\uB300\uC5D0 \uC785\uD559\uD55C \uBD80\uAE30\uC640 \uC0C1\uCC0C..."
   - "\uD544\uC218\uAD50\uC591\uC73C\uB85C \uD300\uD50C\uC744 \uD568\uAED8 \uD558\uAC8C
     \uB41C \uB458\uC740 \uCD5C\uC120\uC744 \uB2E4\uD574 \uC790\uB8CC\uC870\uC0AC\uB97C
     \uD558\uACE0 ppt\uB97C \uB9CC\uB4E4\uAE30\uB85C \uD588\uC5B4\uC694."
@@ -320,8 +319,8 @@ MonoBehaviour:
     \uAC83\uC774 \uC788\uC5C8\uC73C\uB2C8.."
   - "\uB458\uC740 \uC11C\uB85C\uC758 \uAE30\uC900\uC5D0\uC11C \uD3D0\uAE09\uC774\uC5C8\uB358\uAC70\uC5D0\uC694! "
   - "\uB098\uBB34\uC704\uD0A4\uC5D0\uC11C \uC790\uB8CC\uB97C \uAE01\uC5B4\uC624\uB294
-    \uC0C1\uC0C1\uC774\uC640 \uBB34\uC9C0\uAC1C \uBCF4\uB178\uBCF4\uB178 ppt\uB97C
-    \uB9CC\uB4E0 \uCC3D\uC758... \uB458\uC758 \uAC00\uC2B4\uC740 \uC815\uB9D0 \uC6C5\uC7A5\uD574\uC84C\uC5B4\uC694."
+    \uBD80\uAE30\uC640 \uBB34\uC9C0\uAC1C \uBCF4\uB178\uBCF4\uB178 ppt\uB97C \uB9CC\uB4E0
+    \uC0C1\uCC0C... \uB458\uC758 \uAC00\uC2B4\uC740 \uC815\uB9D0 \uC6C5\uC7A5\uD574\uC84C\uC5B4\uC694."
   - "\uB458\uC740 \uACB0\uAD6D 1\uD559\uB144 1\uD559\uAE30\uC5D0 D+\uC774\uB780 \uC804\uC124\uC744
     \uC138\uC6B0\uAC8C \uB418\uB294\uB370..."
 --- !u!114 &519998623
@@ -353,7 +352,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -490,7 +489,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
