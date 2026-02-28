@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public enum PlayerAction
 {
@@ -54,6 +55,8 @@ public class Player : MonoBehaviour
         stagger.BreakShieldValue(1);
     }
 
+    public bool GetIsAttack() { return actionChecker[(int)PlayerAction.ATTACK]; }
+
     /// <summary>
     /// 타인에게 데미지 입을 때 쓰는 함수
     /// </summary>
@@ -91,6 +94,7 @@ public class Player : MonoBehaviour
         // 맞았음
         else
         {
+            playerSprite.SetSprite(PlayerAction.KNOCKBACK);
             actionCounter[(int)PlayerAction.KNOCKBACK]++;
             currentHp -= damage;
             health.SubstractHpValue(damage);
@@ -122,8 +126,17 @@ public class Player : MonoBehaviour
     {
         if (!GameManager.gameStarted) return;
         if (cooldownPreset.attack.IsCooldown) return;
-        anotherPlayer.TryDamagePlayer();
+        if (anotherPlayer.GetIsAttack()) {
+            actionChecker[(int)PlayerAction.ATTACK] = false;
+            coroutine = StartCoroutine(CanActionCoolTime(PlayerAction.ATTACK));
+            cooldownPreset.attack.Play();
+            return;
+        }
+
         SetAction(PlayerAction.ATTACK);
+        gameObject.GetComponent<Image>().canvas.sortingOrder = 1;
+        anotherPlayer.gameObject.GetComponent<Image>().canvas.sortingOrder = 0;
+        anotherPlayer.TryDamagePlayer();
     }
 
     void SetAction(PlayerAction action)
@@ -138,7 +151,7 @@ public class Player : MonoBehaviour
 
         // 쿨타임 체크 및 애니메이션
         actionChecker[(int)action] = false;
-        coroutine = StartCoroutine(CanActionCoolTime());
+        coroutine = StartCoroutine(CanActionCoolTime(action));
         switch (action)
         {
             case PlayerAction.PARRYING:
@@ -156,10 +169,11 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 일정 시간 이후 Action의 상태를 변경합니다.
     /// </summary>
-    IEnumerator CanActionCoolTime()
+    IEnumerator CanActionCoolTime(PlayerAction action)
     {
         yield return new WaitForSeconds(1.0f);
         currentAction = PlayerAction.NONE;
+        actionChecker[(int)action] = true;
         playerSprite.SetSprite(currentAction);
         coroutine = null;
     }
