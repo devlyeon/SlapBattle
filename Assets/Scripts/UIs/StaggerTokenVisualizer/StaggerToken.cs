@@ -39,7 +39,7 @@ public class StaggerToken : MonoBehaviour
     /// 쿨다운 연출을 재생하는 함수
     /// 기존 재생 중이던 연출을 초기화 한다
     /// </summary>
-    public void Play(float cooldownTime)
+    public void Play()
     {
         if (!CanExecute())
             return;
@@ -52,15 +52,13 @@ public class StaggerToken : MonoBehaviour
     private IEnumerator FeedbackAnime()
     {
         // 피드백 연출
-        STRAGGER_TOKEN.Alpha("Lerp", 0.25f, 1f, 0f);
-        STRAGGER_TOKEN_COVER.Scale("Lerp", 0.25f, Vector3.one, new Vector3(0f, 10f, 1f));
-        yield return new WaitForSeconds(0.1f);
-
-        STRAGGER_TOKEN_COVER_FEEDBACK.Play();
+        STRAGGER_TOKEN.Alpha("Lerp", 0.15f, 1f, 0f);
+        STRAGGER_TOKEN_COVER.Scale("Lerp", 0.25f, new Vector3(15f, 15f, 1f), new Vector3(0f, 100f, 1f));
+        STRAGGER_TOKEN_COVER.Alpha("Instant", 0f, 0f, 1f);
         yield return new WaitForSeconds(0.15f);
 
-        // 마지막 값 보정
-        this.Initialize();
+        STRAGGER_TOKEN_COVER_FEEDBACK.Play();
+        yield return new WaitForSeconds(0.1f);
 
         ON_COMPLETE.Invoke();
     }
