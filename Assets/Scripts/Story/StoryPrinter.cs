@@ -11,6 +11,7 @@ public class StoryPrinter : MonoBehaviour
 
     [Header("Text Objects")]
     [SerializeField] private TMP_Text scriptText;
+    [SerializeField] private TMP_Text dpText;
 
     private Coroutine coroutine;
 
@@ -22,6 +23,15 @@ public class StoryPrinter : MonoBehaviour
     void Start()
     {
         if (gameObject.TryGetComponent(out Animator animator)) this.animator = animator;
+        ResetStory();
+    }
+
+    public void ResetStory()
+    {
+        scriptText.text = "";
+        isPrinting = false;
+        isFinish = false;
+        currentPosition = 0;
         StartCoroutine(Delay());
         animator.SetBool("Show", true);
     }
@@ -32,11 +42,18 @@ public class StoryPrinter : MonoBehaviour
         PrintStory();
     }
 
+    IEnumerator DisableObject()
+    {
+        animator.SetBool("Show", false);
+        yield return new WaitForSeconds(1.0f);
+        gameObject.SetActive(false);
+    }
+
     void Update()
     {
         if (Keyboard.current.pKey.wasPressedThisFrame)
         {
-            
+            FinishStory();
         }
         else if (Keyboard.current.anyKey.wasPressedThisFrame)
         {
@@ -77,6 +94,7 @@ public class StoryPrinter : MonoBehaviour
         coroutine = StartCoroutine(PrintText(data[currentPosition]));
         if (currentPosition == 6)
         {
+            dpText.gameObject.SetActive(true);
             animator.SetTrigger("DP");
         }
         if (++currentPosition == data.Count) isFinish = true;
@@ -95,6 +113,6 @@ public class StoryPrinter : MonoBehaviour
 
     public void FinishStory()
     {
-        
+        StartCoroutine(DisableObject());
     }
 }

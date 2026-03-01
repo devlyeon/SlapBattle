@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class RandomTitleText : MonoBehaviour
 {
     [SerializeField] IntroDirection intro;
+    [SerializeField] StoryPrinter story;
     [SerializeField] Animator animator;
 
     private Coroutine coroutine;
@@ -15,25 +16,19 @@ public class RandomTitleText : MonoBehaviour
     void Start()
     {
         if (gameObject.TryGetComponent(out TMP_Text text)) this.text = text;
-        coroutine = StartCoroutine(RandomKey());
     }
 
     void Update()
     {
-        if (Keyboard.current.anyKey.isPressed)
+        if (Keyboard.current.pKey.wasPressedThisFrame)
         {
-            StopCoroutine(coroutine);
+            story.gameObject.SetActive(true);
+            story.ResetStory();
+        }
+        else if (Keyboard.current.anyKey.wasPressedThisFrame && !story.gameObject.activeSelf)
+        {
             animator.SetTrigger("Start");
             StartCoroutine(StartGame());
-        }
-    }
-
-    IEnumerator RandomKey()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(2.0f);
-            text.text = $"[{Keyboard.current.allKeys[Random.Range(0, Keyboard.current.allKeys.Count - 1)].name.FirstCharacterToUpper()} 키]를 눌러 시작하다";
         }
     }
 
