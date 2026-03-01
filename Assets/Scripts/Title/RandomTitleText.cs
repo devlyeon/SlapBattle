@@ -45,15 +45,6 @@ public class RandomTitleText : MonoBehaviour
         IsPush = false;
     }
 
-    IEnumerator RandomKey()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(2.0f);
-            text.text = $"[{Keyboard.current.allKeys[Random.Range(0, Keyboard.current.allKeys.Count - 1)].name.FirstCharacterToUpper()} 키]를 눌러 시작하다";
-        }
-    }
-
     IEnumerator StartGame()
     {
         resultDirection.Initialize();

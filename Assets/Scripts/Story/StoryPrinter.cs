@@ -50,21 +50,9 @@ public class StoryPrinter : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.pKey.wasPressedThisFrame)
-        {
-            FinishStory();
-        }
-        else if (Keyboard.current.anyKey.wasPressedThisFrame)
-        {
-            PrintStory();
-        }
+        if (Keyboard.current.pKey.wasPressedThisFrame) FinishStory();
+        else if (Keyboard.current.anyKey.wasPressedThisFrame) PrintStory();
     }
-
-    public int GetStoryCount() { return data.Count; }
-    public void SetStory(List<string> data) { this.data = data; }
-    public bool GetIsFinish() { return isFinish; }
-    public bool GetActive() { return gameObject.activeSelf; }
-    public void SetActive(bool active) { gameObject.SetActive(active); }
 
     public void PrintStory()
     {
@@ -105,7 +93,7 @@ public class StoryPrinter : MonoBehaviour
         for (int i = 1; i <= script.Length; i++)
         { // 대사의 글자 수만큼 반복합니다.
             scriptText.text = script.Substring(0, i); // 대사를 한 글자씩 나타나게끔 출력합니다.
-            yield return new WaitForSeconds(0.02f); // 0.02초만큼 기다렸다가 반복문을 실행합니다. 코루틴문에서 필수적으로 들어가야하는 구문입니다.
+            yield return new WaitForSeconds(0.02f);
         }
         isPrinting = false; // 출력이 끝났음을 알립니다.
     }

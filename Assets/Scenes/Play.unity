@@ -2801,9 +2801,6 @@ MonoBehaviour:
     attack: {fileID: 1374127999}
   playerStats: {fileID: 11400000, guid: 6570cd720c3116947b61d68139024633, type: 2}
   anotherPlayer: {fileID: 1682146634}
-  cutSceneForWin:
-    aWin: {fileID: 2055382918}
-    bWin: {fileID: 1271371634}
   ko: {fileID: 7736835992708699647}
   outro: {fileID: 8706191231470362649}
   result: {fileID: 173930387}
@@ -10382,9 +10379,6 @@ MonoBehaviour:
     attack: {fileID: 176542718}
   playerStats: {fileID: 11400000, guid: 6570cd720c3116947b61d68139024633, type: 2}
   anotherPlayer: {fileID: 455922683}
-  cutSceneForWin:
-    aWin: {fileID: 2055382918}
-    bWin: {fileID: 1271371634}
   ko: {fileID: 7736835992708699647}
   outro: {fileID: 8706191231470362649}
   result: {fileID: 173930387}
