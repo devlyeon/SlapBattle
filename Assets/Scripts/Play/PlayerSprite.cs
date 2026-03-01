@@ -11,6 +11,10 @@ public class PlayerSprite : MonoBehaviour
     }
 
     [SerializeField] PlayerSpritePreset sprites;
+    [SerializeField] private PlayerAttackAnime _playerAttackAnime;
+    [SerializeField] private PlayerDodgeAnime _playerDodgeAnime;
+    [SerializeField] private PlayerParryAnime _playerParryAnime;
+    [SerializeField] private PlayerHitAnime _playerHitAnime;
 
     private Image playerImage;
     private Animator animator;
@@ -26,19 +30,28 @@ public class PlayerSprite : MonoBehaviour
         switch (action)
         {
             case PlayerAction.NONE:
-                if (sprites.idle != null) playerImage.sprite = sprites.idle;
+                // if (sprites.idle != null) playerImage.sprite = sprites.idle;
+                ResetAnime();
                 break;
             case PlayerAction.PARRYING:
                 // animator.SetTrigger("Parrying");
+                ResetAnime();
+                _playerParryAnime.Play();
                 break;
             case PlayerAction.DODGE:
-                animator.SetTrigger("Dodge");
+                // animator.SetTrigger("Dodge");
+                ResetAnime();
+                _playerDodgeAnime.Play();
                 break;
             case PlayerAction.ATTACK:
-                animator.SetTrigger("Attack");
+                // animator.SetTrigger("Attack");
+                ResetAnime();
+                _playerAttackAnime.Play();
                 break;
             case PlayerAction.KNOCKBACK:
-                animator.SetTrigger("Damaged");
+                // animator.SetTrigger("Damaged");
+                ResetAnime();
+                _playerHitAnime.Play();
                 break;
             case PlayerAction.DEFEAT:
                 // if (sprites.knockout != null) playerImage.sprite = sprites.knockout;
@@ -50,5 +63,13 @@ public class PlayerSprite : MonoBehaviour
                 // if (anims.idle != null) playerImage.sprite = anims.idle;
                 break;
         }
+    }
+
+    private void ResetAnime()
+    {
+        _playerAttackAnime.Initialize();
+        _playerDodgeAnime.Initialize();
+        _playerParryAnime.Initialize();
+        _playerHitAnime.Initialize();
     }
 }

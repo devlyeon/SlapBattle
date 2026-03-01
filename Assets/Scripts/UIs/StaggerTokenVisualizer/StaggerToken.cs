@@ -32,7 +32,7 @@ public class StaggerToken : MonoBehaviour
         if (!CanExecute())
             return;
 
-        STRAGGER_TOKEN.Alpha("Instant", 0f, 0f, 1f);
+        STRAGGER_TOKEN.Alpha(EaseType.Instant, 0f, 0f, 1f);
     }
 
     /// <summary>
@@ -52,9 +52,9 @@ public class StaggerToken : MonoBehaviour
     private IEnumerator FeedbackAnime()
     {
         // 피드백 연출
-        STRAGGER_TOKEN.Alpha("Lerp", 0.15f, 1f, 0f);
-        STRAGGER_TOKEN_COVER.Scale("Lerp", 0.25f, new Vector3(15f, 15f, 1f), new Vector3(0f, 100f, 1f));
-        STRAGGER_TOKEN_COVER.Alpha("Instant", 0f, 0f, 1f);
+        STRAGGER_TOKEN.Alpha(EaseType.Linear, 0.15f, 1f, 0f);
+        STRAGGER_TOKEN_COVER.Scale(EaseType.Linear, 0.25f, new Vector3(15f, 15f, 1f), new Vector3(0f, 100f, 1f));
+        STRAGGER_TOKEN_COVER.Alpha(EaseType.Instant, 0f, 0f, 1f);
         yield return new WaitForSeconds(0.15f);
 
         STRAGGER_TOKEN_COVER_FEEDBACK.Play();

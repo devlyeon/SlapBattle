@@ -9,6 +9,7 @@ public class StaggerTokenVisualizer : MonoBehaviour
     [SerializeField] private UnityEvent ON_COMPLETE;
     private List<StaggerToken> SAVED_STRAGGER_TOKEN = new List<StaggerToken> {};
     [SerializeField] private StaggerToken STRAGGER_TOKEN;
+    [SerializeField] private PlayerStats PLAYER_STATS;
 
     [Header("수치 사전 설정")]
     private int MAX_SHIELD_COUNT = 3;
@@ -27,6 +28,7 @@ public class StaggerTokenVisualizer : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        MAX_SHIELD_COUNT = PLAYER_STATS.shieldAmount;
         _currentShiledCount = MAX_SHIELD_COUNT;
         _className = this.GetType().Name;
 

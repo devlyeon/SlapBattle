@@ -14,7 +14,7 @@ public class HealthBarHandler : MonoBehaviour
     [Header("디버깅")]
     protected string _className;
 
-    private void Awake()
+    private void Start()
     {
         this.Initialize();
         

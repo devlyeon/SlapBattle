@@ -11,6 +11,8 @@ public class CooldownVisualizer : MonoBehaviour
     [SerializeField] private Image COOLDOWN_COVER_IMAGE;
     [SerializeField] private CooldownTimerVisualizer COOLDOWN_TIMER_VISUALIZER;
     [SerializeField] private FeedbackVisualizer FEEDBACK_VISUALIZER;
+    [SerializeField] private PlayerAction PLAYER_ACTION;
+    [SerializeField] private PlayerStats PLAYER_STATS;
 
     [Header("수치 사전 설정")]
     [SerializeField] private float _cooldownTime = 1.0f;
@@ -27,6 +29,19 @@ public class CooldownVisualizer : MonoBehaviour
 
     private void Awake()
     {
+        switch (PLAYER_ACTION)
+        {
+            case PlayerAction.PARRYING:
+                _cooldownTime = PLAYER_STATS.parryCooldown;
+                break;
+            case PlayerAction.DODGE:
+                _cooldownTime = PLAYER_STATS.dodgeCooldown;
+                break;
+            case PlayerAction.ATTACK:
+                _cooldownTime = PLAYER_STATS.attackCooldown;
+                break;
+        }
+
         if (_isExclusive)
         {
             this.Initialize();

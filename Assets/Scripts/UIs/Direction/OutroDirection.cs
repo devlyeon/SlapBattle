@@ -49,9 +49,9 @@ public class OutroDirection : MonoBehaviour
 
         _isPlaying = false;
 
-        WINNER_PANEL.Alpha("Instant", 0f, 0f, 0f);
-        WINNER_TEXT_DIRECTION.Alpha("Instant", 0f, 0f, 0f);
-        PLAYER_TEXT_DIRECTION.Alpha("Instant", 0f, 0f, 0f);
+        WINNER_PANEL.Alpha(EaseType.Instant, 0f, 0f, 0f);
+        WINNER_TEXT_DIRECTION.Alpha(EaseType.Instant, 0f, 0f, 0f);
+        PLAYER_TEXT_DIRECTION.Alpha(EaseType.Instant, 0f, 0f, 0f);
     }
 
     /// <summary>
@@ -88,17 +88,17 @@ public class OutroDirection : MonoBehaviour
 
         // PLAYER...
         ON_WINNER.Invoke();
-        WINNER_PANEL.Move("Smooth", 0.5f, "x", 650f, 545f);
-        WINNER_PANEL.Alpha("Lerp", 0.5f, 0f, 1f);
+        WINNER_PANEL.Move(EaseType.InCubic, 0.5f, "x", 650f, 545f);
+        WINNER_PANEL.Alpha(EaseType.Linear, 0.5f, 0f, 1f);
         yield return new WaitForSeconds(0.25f);
 
-        PLAYER_TEXT_DIRECTION.Alpha("Lerp", 0.25f, 0f, 1f);
+        PLAYER_TEXT_DIRECTION.Alpha(EaseType.Linear, 0.25f, 0f, 1f);
         yield return new WaitForSeconds(0.5f);
 
         // WIN!!!
         ON_PLAYER.Invoke();
-        WINNER_TEXT_DIRECTION.Move("Smooth", 0.5f, "x", -425f, -520f);
-        WINNER_TEXT_DIRECTION.Alpha("Lerp", 0.5f, 0f, 1f);
+        WINNER_TEXT_DIRECTION.Move(EaseType.InCubic, 0.5f, "x", -425f, -520f);
+        WINNER_TEXT_DIRECTION.Alpha(EaseType.Linear, 0.5f, 0f, 1f);
         yield return new WaitForSeconds(0.5f);
 
         ON_COMPLETE.Invoke();
@@ -121,17 +121,17 @@ public class OutroDirection : MonoBehaviour
 
         // PLAYER...
         ON_WINNER.Invoke();
-        WINNER_PANEL.Move("Smooth", 0.5f, "x", -650f, -545f);
-        WINNER_PANEL.Alpha("Lerp", 0.5f, 0f, 1f);
+        WINNER_PANEL.Move(EaseType.InCubic, 0.5f, "x", -650f, -545f);
+        WINNER_PANEL.Alpha(EaseType.Linear, 0.5f, 0f, 1f);
         yield return new WaitForSeconds(0.25f);
 
-        PLAYER_TEXT_DIRECTION.Alpha("Lerp", 0.25f, 0f, 1f);
+        PLAYER_TEXT_DIRECTION.Alpha(EaseType.Linear, 0.25f, 0f, 1f);
         yield return new WaitForSeconds(0.5f);
 
         // WIN!!!
         ON_PLAYER.Invoke();
-        WINNER_TEXT_DIRECTION.Move("Smooth", 0.5f, "x", 425f, 520f);
-        WINNER_TEXT_DIRECTION.Alpha("Lerp", 0.5f, 0f, 1f);
+        WINNER_TEXT_DIRECTION.Move(EaseType.InCubic, 0.5f, "x", 425f, 520f);
+        WINNER_TEXT_DIRECTION.Alpha(EaseType.Linear, 0.5f, 0f, 1f);
         yield return new WaitForSeconds(0.5f);
 
         ON_COMPLETE.Invoke();

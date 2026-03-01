@@ -46,10 +46,10 @@ public class IntroDirection : MonoBehaviour
 
         _isPlaying = false;
 
-        ARE_TEXT.Alpha("Instant", 0f, 0f, 0f);
-        YOU_TEXT.Alpha("Instant", 0f, 0f, 0f);
-        READY_TEXT.Alpha("Instant", 0f, 0f, 0f);
-        LETSROCK_TEXT.Alpha("Instant", 0f, 0f, 0f);
+        ARE_TEXT.Alpha(EaseType.Instant, 0f, 0f, 0f);
+        YOU_TEXT.Alpha(EaseType.Instant, 0f, 0f, 0f);
+        READY_TEXT.Alpha(EaseType.Instant, 0f, 0f, 0f);
+        LETSROCK_TEXT.Alpha(EaseType.Instant, 0f, 0f, 0f);
     }
 
     /// <summary>
@@ -72,36 +72,36 @@ public class IntroDirection : MonoBehaviour
 
         // 준비하시고...
         ON_ARE.Invoke();
-        ARE_TEXT.Move("Smooth", 0.5f, "y", 200f, 150f);
-        ARE_TEXT.Alpha("Lerp", 0.25f, 0f, 1f);
+        ARE_TEXT.Move(EaseType.InCubic, 0.5f, "y", 200f, 150f);
+        ARE_TEXT.Alpha(EaseType.Linear, 0.25f, 0f, 1f);
         yield return new WaitForSeconds(0.75f);
 
         ON_YOU.Invoke();
-        YOU_TEXT.Move("Smooth", 0.5f, "x", -50f, 0f);
-        YOU_TEXT.Alpha("Lerp", 0.25f, 0f, 1f);
+        YOU_TEXT.Move(EaseType.InCubic, 0.5f, "x", -50f, 0f);
+        YOU_TEXT.Alpha(EaseType.Linear, 0.25f, 0f, 1f);
         yield return new WaitForSeconds(0.35f);
 
         ON_READY.Invoke();
-        READY_TEXT.Move("Smooth", 0.5f, "y", -200f, -150f);
-        READY_TEXT.Alpha("Lerp", 0.25f, 0f, 1f);
+        READY_TEXT.Move(EaseType.InCubic, 0.5f, "y", -200f, -150f);
+        READY_TEXT.Alpha(EaseType.Linear, 0.25f, 0f, 1f);
         yield return new WaitForSeconds(1f);
 
-        ARE_TEXT.Alpha("Lerp", 0.25f, 1f, 0f);
-        YOU_TEXT.Alpha("Lerp", 0.25f, 1f, 0f);
-        READY_TEXT.Alpha("Lerp", 0.25f, 1f, 0f);
+        ARE_TEXT.Alpha(EaseType.Linear, 0.25f, 1f, 0f);
+        YOU_TEXT.Alpha(EaseType.Linear, 0.25f, 1f, 0f);
+        READY_TEXT.Alpha(EaseType.Linear, 0.25f, 1f, 0f);
         yield return new WaitForSeconds(0.3f);
 
         // 락 앤 롤!
         ON_LETSROCK.Invoke();
-        LETSROCK_TEXT.Scale("Lerp", 0.1f, Vector3.one * 20f, Vector3.one * 12f);
-        LETSROCK_TEXT.Alpha("Instant", 0f, 0f, 1f);
+        LETSROCK_TEXT.Scale(EaseType.Linear, 0.1f, Vector3.one * 20f, Vector3.one * 12f);
+        LETSROCK_TEXT.Alpha(EaseType.Instant, 0f, 0f, 1f);
         yield return new WaitForSeconds(0.1f);
 
-        LETSROCK_TEXT.Scale("Lerp", 0.75f, Vector3.one * 12f, Vector3.one * 12.5f);
+        LETSROCK_TEXT.Scale(EaseType.Linear, 0.75f, Vector3.one * 12f, Vector3.one * 12.5f);
         yield return new WaitForSeconds(0.75f);
 
-        LETSROCK_TEXT.Scale("Lerp", 0.1f, Vector3.one * 12.5f, new Vector3(20f, 1f, 1f));
-        LETSROCK_TEXT.Alpha("Lerp", 0.1f, 1f, 0f);
+        LETSROCK_TEXT.Scale(EaseType.Linear, 0.1f, Vector3.one * 12.5f, new Vector3(20f, 1f, 1f));
+        LETSROCK_TEXT.Alpha(EaseType.Linear, 0.1f, 1f, 0f);
         yield return new WaitForSeconds(0.1f);
 
         ON_COMPLETE.Invoke();

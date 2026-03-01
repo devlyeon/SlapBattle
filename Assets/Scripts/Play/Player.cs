@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     [SerializeField] private CooldownPreset cooldownPreset;
 
     [Header("Another Object Components")]
+    [Tooltip("플레이어의 스탯을 받아오는 PlayerStats class입니다.")]
+    [SerializeField] private PlayerStats playerStats;
     [Tooltip("다른 Player class의 function을 호출하기 위한 Player class입니다.")]
     [SerializeField] private Player anotherPlayer;
     [Tooltip("게임 결과를 표시하기 위한 Player class입니다.")]
@@ -45,7 +47,7 @@ public class Player : MonoBehaviour
     [SerializeField] private OutroDirection outro;
 
     // 현재 Player의 action입니다.
-    private PlayerAction currentAction = PlayerAction.NONE;
+    [SerializeField] private PlayerAction currentAction = PlayerAction.NONE;
     public PlayerAction CurrentAction => currentAction;
 
     // Player의 체력입니다. maxHp는 체력의 최댓값, currentHp는 현재 체력값입니다.
@@ -56,6 +58,12 @@ public class Player : MonoBehaviour
     private bool[] actionChecker = { true, true, true }; // Parrying, Dodge, Attack -> PlayerAction과 동일
     private int[] actionCounter = { 0, 0, 0, 0 }; // Parrying, Dodge, Attack, Knockback -> PlayerAction과 동일
     private Coroutine coroutine = null;
+
+    private void Awake()
+    {
+        maxHp = playerStats.maxHealth;
+        currentHp = maxHp;
+    }
 
     // 패링으로 인한 공격 실패 피드백
     public void BreakStagger()
@@ -84,8 +92,8 @@ public class Player : MonoBehaviour
         {
             actionChecker[(int)PlayerAction.PARRYING] = true;
             anotherPlayer.BreakStagger();
-            if (++actionCounter[(int)PlayerAction.PARRYING] >= 3)
-                anotherPlayer.TryDamagePlayer(100, true);
+            if (++actionCounter[(int)PlayerAction.PARRYING] >= playerStats.shieldAmount)
+                anotherPlayer.TryDamagePlayer(maxHp, true);
         }
 
         // 회피 성공
@@ -118,6 +126,8 @@ public class Player : MonoBehaviour
     {
         if (!GameManager.gameStarted) return;
         if (cooldownPreset.parrying.IsCooldown) return;
+        if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
+        if (currentAction != PlayerAction.NONE) return;
         SetAction(PlayerAction.PARRYING);
     }
 
@@ -125,6 +135,8 @@ public class Player : MonoBehaviour
     {
         if (!GameManager.gameStarted) return;
         if (cooldownPreset.dodge.IsCooldown) return;
+        if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
+        if (currentAction != PlayerAction.NONE) return;
         SetAction(PlayerAction.DODGE);
     }
 
@@ -133,11 +145,12 @@ public class Player : MonoBehaviour
         if (!GameManager.gameStarted) return;
         if (cooldownPreset.attack.IsCooldown) return;
         if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
+        if (currentAction != PlayerAction.NONE) return;
 
         SetAction(PlayerAction.ATTACK);
         gameObject.GetComponent<Image>().canvas.sortingOrder = 1;
         anotherPlayer.gameObject.GetComponent<Image>().canvas.sortingOrder = 0;
-        anotherPlayer.TryDamagePlayer();
+        anotherPlayer.TryDamagePlayer(playerStats.attackPower);
     }
 
     void SetAction(PlayerAction action)
@@ -172,7 +185,21 @@ public class Player : MonoBehaviour
     /// </summary>
     IEnumerator CanActionCoolTime(PlayerAction action)
     {
-        yield return new WaitForSeconds(1.0f);
+        switch (action)
+        {
+            case PlayerAction.ATTACK:
+                yield return new WaitForSeconds(playerStats.attackRecoveryTime);
+                break;
+            case PlayerAction.DODGE:
+                yield return new WaitForSeconds(playerStats.dodgeRecoveryTime);
+                break;
+            case PlayerAction.PARRYING:
+                yield return new WaitForSeconds(playerStats.parryRecoveryTime);
+                break;
+            default:
+                yield return null;
+                break;
+        }
         currentAction = PlayerAction.NONE;
         actionChecker[(int)action] = true;
         playerSprite.SetSprite(currentAction);
