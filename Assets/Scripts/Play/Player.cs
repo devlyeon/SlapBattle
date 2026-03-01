@@ -270,7 +270,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             if (playerId == 1)
             {
                 result.Play(PlayerResult.PLAYER_A);

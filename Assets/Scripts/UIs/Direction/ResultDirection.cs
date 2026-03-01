@@ -83,7 +83,7 @@ public class ResultDirection : MonoBehaviour
 
         ON_WINNERBANNER.Invoke();
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
         RANDOM_TITLE_TEXT.Initialize();
 
         ON_COMPLETE.Invoke();
