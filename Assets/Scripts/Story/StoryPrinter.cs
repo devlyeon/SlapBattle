@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 // 코드 복붙해온거라 뭔가 엉망진창인데 신경 안 쓰고 나중에 다 정리할 예정
 // 근데 그게 오늘은 아닐 수도
@@ -16,10 +17,31 @@ public class StoryPrinter : MonoBehaviour
     [SerializeField] private List<string> data = new List<string>();
     private int currentPosition = 0;
     private bool isPrinting = false, isFinish = false;
+    private Animator animator;
+
+    void Start()
+    {
+        if (gameObject.TryGetComponent(out Animator animator)) this.animator = animator;
+        StartCoroutine(Delay());
+        animator.SetBool("Show", true);
+    }
+
+    IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(1.0f);
+        PrintStory();
+    }
 
     void Update()
     {
-        
+        if (Keyboard.current.pKey.wasPressedThisFrame)
+        {
+            
+        }
+        else if (Keyboard.current.anyKey.wasPressedThisFrame)
+        {
+            PrintStory();
+        }
     }
 
     public int GetStoryCount() { return data.Count; }
@@ -52,18 +74,12 @@ public class StoryPrinter : MonoBehaviour
             return;
         }
 
-        // 현재 발화자를 감지합니다.
-        if (data[currentPosition] != "")
+        coroutine = StartCoroutine(PrintText(data[currentPosition]));
+        if (currentPosition == 6)
         {
-            coroutine = StartCoroutine(PrintText(data[currentPosition]));
-            if (++currentPosition == data.Count) isFinish = true;
+            animator.SetTrigger("DP");
         }
-        else
-        {
-            // 이벤트 구간
-            currentPosition++;
-            PrintText();
-        }
+        if (++currentPosition == data.Count) isFinish = true;
     }
 
     IEnumerator PrintText(string script)
