@@ -44,7 +44,7 @@ public class ResultDirection : MonoBehaviour
         if (IsPlaying)
         {
             _isPlaying = false;
-            WINNER_BANNER.Alpha(EaseType.Linear, 0.1f, 1f, 0f);
+            WINNER_BANNER.Alpha(EaseType.Linear, 0.25f, 1f, 0f);
         }
         else
         {
@@ -83,7 +83,6 @@ public class ResultDirection : MonoBehaviour
 
         ON_WINNERBANNER.Invoke();
 
-        yield return new WaitForSeconds(2f);
         RANDOM_TITLE_TEXT.Initialize();
 
         ON_COMPLETE.Invoke();

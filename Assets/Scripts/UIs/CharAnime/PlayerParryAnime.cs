@@ -44,22 +44,25 @@ public class PlayerParryAnime : PlayerAnimeBase
         _player.Area(
             EaseType.Instant, 0f, Vector2.zero, new Vector2(SPRITES_LIBRARY[0].rect.width, SPRITES_LIBRARY[0].rect.height)
             );
+        _player.Scale(
+            EaseType.Instant, 0f, new Vector3(0f, 0f, 0f), new Vector3(1.05f, 1.05f, 1f)
+        );
         yield return null;
 
         _player.Position(
-            EaseType.OutQuart, _startUpTime, new Vector3(Reposition(0f), 0f, 0f), new Vector3(Reposition(-300f), -45f, 0f)
+            EaseType.OutQuart, _startUpTime, new Vector3(Reposition(80f), -30f, 0f), new Vector3(Reposition(5f), -40f, 0f)
         );
         _player.Rotation(
-            EaseType.OutQuart, _startUpTime, new Vector3(0f, 0f, Reposition(0f)), new Vector3(0f, 0f, Reposition(15f))
+            EaseType.OutQuart, _startUpTime, new Vector3(0f, 0f, Reposition(0f)), new Vector3(0f, 0f, Reposition(7f))
         );
         yield return new WaitForSeconds(_startUpTime);
 
         // 후딜
         _player.Position(
-            EaseType.InQuart, _recoveryTime, new Vector3(Reposition(-300f), -45f, 0f), new Vector3(Reposition(0f), 0f, 0f)
+            EaseType.InQuart, _recoveryTime, new Vector3(Reposition(5f), -40f, 0f), new Vector3(Reposition(80f), -30f, 0f)
         );
         _player.Rotation(
-            EaseType.InQuart, _recoveryTime, new Vector3(0f, 0f, Reposition(15f)), new Vector3(0f, 0f, Reposition(0f))
+            EaseType.InQuart, _recoveryTime, new Vector3(0f, 0f, Reposition(7f)), new Vector3(0f, 0f, Reposition(0f))
         );
         yield return new WaitForSeconds(_recoveryTime);
 

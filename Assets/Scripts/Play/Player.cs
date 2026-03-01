@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public enum PlayerAction
 {
-    PARRYING = 0, DODGE = 1, ATTACK = 2, KNOCKBACK = 3, DEFEAT = 4, WIN = 5, NONE = 6
+    PARRYING = 0, DODGE = 1, ATTACK = 2, KNOCKBACK = 3, DEFEAT = 4, WIN = 5, NONE = 6, DELAY = 7,
 }
 
 public class Player : MonoBehaviour
@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
     [SerializeField] private PlayerSprite playerSprite;
     [Tooltip("플레이어 체력 표시를 위한 HealthBarHandler class입니다.")]
     [SerializeField] private HealthBarHandler health;
+    [Tooltip("플레이어 승리 라운드 피드백을 위한 RoundVisualizer입니다.")]
+    [SerializeField] private RoundVisualizer roundVisualizer;
     [Tooltip("플레이어 패링 피드백을 위한 StaggerTokenVisualizer Preset입니다.")]
     [SerializeField] private StaggerTokenVisualizer stagger;
     [Tooltip("플레이어 동작 피드백을 위한 CooldownVisualizer Preset입니다.")]
@@ -104,6 +106,8 @@ public class Player : MonoBehaviour
             anotherPlayer.BreakStagger();
             if (++actionCounter[(int)PlayerAction.PARRYING] >= playerStats.shieldAmount)
                 anotherPlayer.TryDamagePlayer(maxHp, true);
+            else
+                anotherPlayer.TryDamagePlayer(0, false);
         }
 
         // 회피 성공
@@ -118,7 +122,7 @@ public class Player : MonoBehaviour
         // 맞았음
         else
         {
-            playerSprite.SetSprite(PlayerAction.KNOCKBACK);
+            SetAction(PlayerAction.KNOCKBACK);
             actionCounter[(int)PlayerAction.KNOCKBACK]++;
             currentHp -= damage;
             health.SubstractHpValue(damage);
@@ -138,7 +142,7 @@ public class Player : MonoBehaviour
         if (!GameManager.gameStarted) return;
         if (cooldownPreset.parrying.IsCooldown) return;
         if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
-        if (currentAction != PlayerAction.NONE) return;
+        if (!currentAction.Equals(PlayerAction.NONE)) return;
         SetAction(PlayerAction.PARRYING);
     }
 
@@ -147,7 +151,7 @@ public class Player : MonoBehaviour
         if (!GameManager.gameStarted) return;
         if (cooldownPreset.dodge.IsCooldown) return;
         if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
-        if (currentAction != PlayerAction.NONE) return;
+        if (!currentAction.Equals(PlayerAction.NONE)) return;
         SetAction(PlayerAction.DODGE);
     }
 
@@ -156,7 +160,7 @@ public class Player : MonoBehaviour
         if (!GameManager.gameStarted) return;
         if (cooldownPreset.attack.IsCooldown) return;
         if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
-        if (currentAction != PlayerAction.NONE) return;
+        if (!currentAction.Equals(PlayerAction.NONE)) return;
 
         SetAction(PlayerAction.ATTACK);
         gameObject.GetComponent<Image>().canvas.sortingOrder = 1;
@@ -166,18 +170,16 @@ public class Player : MonoBehaviour
 
     void SetAction(PlayerAction action)
     {
-        // 현재 액션을 action으로 지정
-        currentAction = action;
-        playerSprite.SetSprite(currentAction);
         if (coroutine != null)
         {
             StopCoroutine(coroutine);
             coroutine = null;
         }
-
         // 쿨타임 체크 및 애니메이션
-        actionChecker[(int)action] = false;
-        coroutine = StartCoroutine(CanActionCoolTime(action));
+        if ((int)action <= 2)
+            actionChecker[(int)action] = false;
+        playerSprite.SetSprite(action);
+        coroutine = StartCoroutine(CanActionBefore(action));
         switch (action)
         {
             case PlayerAction.PARRYING:
@@ -195,25 +197,64 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 일정 시간 이후 Action의 상태를 변경합니다.
     /// </summary>
+    IEnumerator CanActionBefore(PlayerAction action)
+    {
+        switch (action)
+        {
+            case PlayerAction.ATTACK:
+                currentAction = PlayerAction.DELAY;
+                yield return new WaitForSeconds(playerStats.attackStartupTime);
+                break;
+            case PlayerAction.DODGE:
+                currentAction = PlayerAction.DELAY;
+                yield return new WaitForSeconds(playerStats.dodgeStartupTime);
+                break;
+            case PlayerAction.PARRYING:
+                currentAction = PlayerAction.DELAY;
+                yield return new WaitForSeconds(playerStats.parryStartupTime);
+                break;
+            default:
+                yield return null;
+                break;
+        }
+        // 현재 액션을 action으로 지정
+        currentAction = action;
+
+        coroutine = StartCoroutine(CanActionCoolTime(action));
+    }
+
+    /// <summary>
+    /// 일정 시간 이후 Action의 상태를 변경합니다.
+    /// </summary>
     IEnumerator CanActionCoolTime(PlayerAction action)
     {
         switch (action)
         {
             case PlayerAction.ATTACK:
+                yield return new WaitForSeconds(playerStats.attackActive);
+                currentAction = PlayerAction.DELAY;
                 yield return new WaitForSeconds(playerStats.attackRecoveryTime);
                 break;
             case PlayerAction.DODGE:
+                yield return new WaitForSeconds(playerStats.dodgeActive);
+                currentAction = PlayerAction.DELAY;
                 yield return new WaitForSeconds(playerStats.dodgeRecoveryTime);
                 break;
             case PlayerAction.PARRYING:
+                yield return new WaitForSeconds(playerStats.parryActive);
+                currentAction = PlayerAction.DELAY;
                 yield return new WaitForSeconds(playerStats.parryRecoveryTime);
+                break;
+            case PlayerAction.KNOCKBACK:
+                yield return new WaitForSeconds(playerStats.knockbackRecoveryTime);
                 break;
             default:
                 yield return null;
                 break;
         }
         currentAction = PlayerAction.NONE;
-        actionChecker[(int)action] = true;
+        if ((int)action <= 2)
+            actionChecker[(int)action] = true;
         playerSprite.SetSprite(currentAction);
         coroutine = null;
     }
@@ -244,6 +285,7 @@ public class Player : MonoBehaviour
     private IEnumerator FinishGameAnime(bool isWinner)
     {
         winRound += 1;
+        anotherPlayer.roundVisualizer.SubstractRound();
         bool isGameOver = winRound >= 2;
 
         if (!isGameOver)

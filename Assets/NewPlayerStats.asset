@@ -14,10 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
   maxHealth: 100
   shieldAmount: 3
-  attackPower: 5
-  attackRecoveryTime: 0.45
-  dodgeRecoveryTime: 0.35
-  parryRecoveryTime: 0.75
+  attackPower: 10
+  attackStartupTime: 0.15
+  dodgeStartupTime: 0
+  parryStartupTime: 0
+  attackActive: 0.05
+  dodgeActive: 0.2
+  parryActive: 0.15
+  attackRecoveryTime: 0.25
+  dodgeRecoveryTime: 0.3
+  parryRecoveryTime: 0.2
+  knockbackRecoveryTime: 0.5
   attackCooldown: 0.5
   dodgeCooldown: 0.75
-  parryCooldown: 1
+  parryCooldown: 1.5
