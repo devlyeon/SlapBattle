@@ -2528,10 +2528,10 @@ MonoBehaviour:
   cutSceneForWin:
     aWin: {fileID: 2055382918}
     bWin: {fileID: 1271371634}
-  ko: {fileID: 0}
+  ko: {fileID: 7736835992708699647}
   outro: {fileID: 8706191231470362649}
-  result: {fileID: 0}
-  cameraShake: {fileID: 0}
+  result: {fileID: 173930387}
+  cameraShake: {fileID: 318452043}
   currentAction: 6
 --- !u!114 &455922684
 MonoBehaviour:
@@ -3262,13 +3262,13 @@ MonoBehaviour:
     idle: {fileID: 3085272413815165881, guid: 8d08312a761df2344b4cdd6d41983206, type: 3}
     damaged: {fileID: 0}
     knockout: {fileID: 0}
-  _playerIdleAnime: {fileID: 0}
+  _playerIdleAnime: {fileID: 50069801}
   _playerAttackAnime: {fileID: 1403592306}
   _playerDodgeAnime: {fileID: 1849876491}
   _playerParryAnime: {fileID: 288853401}
   _playerHitAnime: {fileID: 703792581}
-  _playerWinAnime: {fileID: 0}
-  _playerDefeatAnime: {fileID: 0}
+  _playerWinAnime: {fileID: 1794878738}
+  _playerDefeatAnime: {fileID: 594130137}
 --- !u!222 &576731199
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4290,7 +4290,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RandomTitleText
   intro: {fileID: 2495319344277440004}
   animator: {fileID: 988370895}
-  resultDirection: {fileID: 0}
+  resultDirection: {fileID: 173930387}
 --- !u!1 &742738035
 GameObject:
   m_ObjectHideFlags: 0
@@ -5673,13 +5673,13 @@ MonoBehaviour:
     idle: {fileID: 21300000, guid: da9e31682d0ea4a2e905827df3b509cc, type: 3}
     damaged: {fileID: 0}
     knockout: {fileID: 0}
-  _playerIdleAnime: {fileID: 0}
+  _playerIdleAnime: {fileID: 2138225574}
   _playerAttackAnime: {fileID: 864210057}
   _playerDodgeAnime: {fileID: 1984210442}
   _playerParryAnime: {fileID: 697406139}
   _playerHitAnime: {fileID: 314242866}
-  _playerWinAnime: {fileID: 0}
-  _playerDefeatAnime: {fileID: 0}
+  _playerWinAnime: {fileID: 1161830307}
+  _playerDefeatAnime: {fileID: 800226754}
 --- !u!222 &1081980044
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8589,10 +8589,10 @@ MonoBehaviour:
   cutSceneForWin:
     aWin: {fileID: 2055382918}
     bWin: {fileID: 1271371634}
-  ko: {fileID: 0}
+  ko: {fileID: 7736835992708699647}
   outro: {fileID: 8706191231470362649}
-  result: {fileID: 0}
-  cameraShake: {fileID: 0}
+  result: {fileID: 173930387}
+  cameraShake: {fileID: 318452043}
   currentAction: 6
 --- !u!114 &1682146635
 MonoBehaviour:
@@ -11313,12 +11313,24 @@ MonoBehaviour:
         m_CallState: 2
   ON_DESTORY:
     m_PersistentCalls:
-      m_Calls: []
-  PLAYER_A_BANNER: {fileID: 0}
-  PLAYER_B_BANNER: {fileID: 0}
-  DARK_DISSOLVE: {fileID: 0}
-  WINNER_BANNER: {fileID: 0}
-  DARK_TRANSITION: {fileID: 0}
+      m_Calls:
+      - m_Target: {fileID: 2495319344277440004}
+        m_TargetAssemblyTypeName: IntroDirection, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  PLAYER_A_BANNER: {fileID: 21300000, guid: 032f8a603c2624d84b57f22ef00ef13a, type: 3}
+  PLAYER_B_BANNER: {fileID: 21300000, guid: 2abf613bdbcff49fcab2f650db59821a, type: 3}
+  DARK_DISSOLVE: {fileID: 10276222}
+  WINNER_BANNER: {fileID: 489156855}
+  DARK_TRANSITION: {fileID: 184465528}
 --- !u!114 &8926839547068038203
 MonoBehaviour:
   m_ObjectHideFlags: 0
