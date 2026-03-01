@@ -11,10 +11,13 @@ public class PlayerSprite : MonoBehaviour
     }
 
     [SerializeField] PlayerSpritePreset sprites;
+    [SerializeField] private PlayerIdleAnime _playerIdleAnime;
     [SerializeField] private PlayerAttackAnime _playerAttackAnime;
     [SerializeField] private PlayerDodgeAnime _playerDodgeAnime;
     [SerializeField] private PlayerParryAnime _playerParryAnime;
     [SerializeField] private PlayerHitAnime _playerHitAnime;
+    [SerializeField] private PlayerWinAnime _playerWinAnime;
+    [SerializeField] private PlayerDefeatAnime _playerDefeatAnime;
 
     private Image playerImage;
     private Animator animator;
@@ -30,8 +33,7 @@ public class PlayerSprite : MonoBehaviour
         switch (action)
         {
             case PlayerAction.NONE:
-                // if (sprites.idle != null) playerImage.sprite = sprites.idle;
-                ResetAnime();
+                _playerIdleAnime.Play();
                 break;
             case PlayerAction.PARRYING:
                 // animator.SetTrigger("Parrying");
@@ -55,9 +57,13 @@ public class PlayerSprite : MonoBehaviour
                 break;
             case PlayerAction.DEFEAT:
                 // if (sprites.knockout != null) playerImage.sprite = sprites.knockout;
+                ResetAnime();
+                _playerDefeatAnime.Play();
                 break;
             case PlayerAction.WIN:
                 // if (anims.win != null) playerImage.sprite = anims.win;
+                ResetAnime();
+                _playerWinAnime.Play();
                 break;
             default:
                 // if (anims.idle != null) playerImage.sprite = anims.idle;
@@ -71,5 +77,7 @@ public class PlayerSprite : MonoBehaviour
         _playerDodgeAnime.Initialize();
         _playerParryAnime.Initialize();
         _playerHitAnime.Initialize();
+        _playerWinAnime.Initialize();
+        _playerDefeatAnime.Initialize();
     }
 }
