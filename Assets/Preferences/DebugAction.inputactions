@@ -1,0 +1,75 @@
+{
+    "version": 1,
+    "name": "DebugAction",
+    "maps": [
+        {
+            "name": "ForDebug",
+            "id": "9f48dd19-b28f-4bc5-ae6d-1432649a0ff7",
+            "actions": [
+                {
+                    "name": "Point",
+                    "type": "Value",
+                    "id": "a5b056fe-3331-40ac-81d7-2eb33d35c064",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LeftClick",
+                    "type": "Button",
+                    "id": "43ef3526-d2a4-4c00-8f4e-71c2c4310e6b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Submit",
+                    "type": "Button",
+                    "id": "31759d8c-3ee6-4fd8-bfa6-134902da579c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "eb66879d-eb48-43ff-8a45-1d8fa0972d5b",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "764d6d7a-07a9-427b-82a8-61869ed21aa8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c09dd000-e086-452c-b983-27a2cdccc39a",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -1,0 +1,347 @@
+using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
+public enum PlayerAction
+{
+    PARRYING = 0, DODGE = 1, ATTACK = 2, KNOCKBACK = 3, DEFEAT = 4, WIN = 5, NONE = 6, DELAY = 7,
+}
+
+public class Player : MonoBehaviour
+{
+    // 인스펙터에서 CooldownVisualizer를 쉽게 설정하기 위한 struct
+    [Serializable]
+    public struct CooldownPreset
+    {
+        public CooldownVisualizer parrying, dodge, attack;
+    }
+
+    [Header("Player Components")]
+    [Tooltip("플레이어 구분을 위한 ID입니다. A는 1, B는 2로 설정해주시기 바랍니다.")]
+    [SerializeField] private int playerId = 0;
+    [Tooltip("플레이어 애니메이션 컨트롤을 위한 PlayerSprite class입니다.")]
+    [SerializeField] private PlayerSprite playerSprite;
+    [Tooltip("플레이어 체력 표시를 위한 HealthBarHandler class입니다.")]
+    [SerializeField] private HealthBarHandler health;
+    [Tooltip("플레이어 승리 라운드 피드백을 위한 RoundVisualizer입니다.")]
+    [SerializeField] private RoundVisualizer roundVisualizer;
+    [Tooltip("플레이어 패링 피드백을 위한 StaggerTokenVisualizer Preset입니다.")]
+    [SerializeField] private StaggerTokenVisualizer stagger;
+    [Tooltip("플레이어 동작 피드백을 위한 CooldownVisualizer Preset입니다.")]
+    [SerializeField] private CooldownPreset cooldownPreset;
+
+    [Header("Another Object Components")]
+    [Tooltip("플레이어의 스탯을 받아오는 PlayerStats class입니다.")]
+    [SerializeField] private PlayerStats playerStats;
+    [Tooltip("다른 Player class의 function을 호출하기 위한 Player class입니다.")]
+    [SerializeField] private Player anotherPlayer;
+    [Tooltip("KO 연출을 표시하기 위한 KO class입니다.")]
+    [SerializeField] private KoDirection ko;
+    [Tooltip("게임 결과를 표시하기 위한 OutroDirection class입니다.")]
+    [SerializeField] private OutroDirection outro;
+    [Tooltip("게임 결과를 표시하기 위한 ResultDirection class입니다.")]
+    [SerializeField] private ResultDirection result;
+    [Tooltip("타격감을 위한 CameraShake class입니다.")]
+    [SerializeField] private CameraShake cameraShake;
+
+    // 현재 Player의 action입니다.
+    [SerializeField] private PlayerAction currentAction = PlayerAction.NONE;
+    public PlayerAction CurrentAction => currentAction;
+
+    // Player의 체력입니다. maxHp는 체력의 최댓값, currentHp는 현재 체력값입니다.
+    private int maxHp = 100, currentHp = 100;
+    public int MaxHp => maxHp;
+
+    // Player의 이긴 라운드입니다.
+    private int winRound = 0;
+    public int WinRound => winRound;
+
+    // 통계 및 상태 확인을 위한 값입니다.
+    private bool[] actionChecker = { true, true, true }; // Parrying, Dodge, Attack -> PlayerAction과 동일
+    private int[] actionCounter = { 0, 0, 0, 0 }; // Parrying, Dodge, Attack, Knockback -> PlayerAction과 동일
+    private Coroutine coroutine = null;
+
+    private void Awake()
+    {
+        maxHp = playerStats.maxHealth;
+        currentHp = maxHp;
+    }
+
+    // 패링으로 인한 공격 실패 피드백
+    public void BreakStagger()
+    {
+        stagger.BreakShieldValue(1);
+    }
+
+    /// <summary>
+    /// 타인에게 데미지 입을 때 쓰는 함수
+    /// </summary>
+    public void TryDamagePlayer(int damage = 5, bool isFatal = false)
+    {
+        // 예외: 패링 3번 당함
+        if (isFatal)
+        {
+            // 상대 플레이어 승리!!
+            actionCounter[(int)PlayerAction.KNOCKBACK]++;
+            health.SubstractHpValue(damage);
+            FinishGame(false);
+            anotherPlayer.FinishGame(true);
+            return;
+        }
+
+        // 패링 성공
+        if (currentAction.Equals(PlayerAction.PARRYING))
+        {
+            actionChecker[(int)PlayerAction.PARRYING] = true;
+            anotherPlayer.BreakStagger();
+            if (++actionCounter[(int)PlayerAction.PARRYING] >= playerStats.shieldAmount)
+                anotherPlayer.TryDamagePlayer(maxHp, true);
+            else
+                anotherPlayer.TryDamagePlayer(0, false);
+        }
+
+        // 회피 성공
+        else if (currentAction.Equals(PlayerAction.DODGE))
+        {
+            actionChecker[(int)PlayerAction.DODGE] = true;
+            // 매 10회 사용 시 쿨타임이 다시 돌아요
+            if ((++actionCounter[(int)PlayerAction.DODGE] % 10) == 0)
+                cooldownPreset.dodge.Play();
+        }
+
+        // 맞았음
+        else
+        {
+            SetAction(PlayerAction.KNOCKBACK);
+            actionCounter[(int)PlayerAction.KNOCKBACK]++;
+            currentHp -= damage;
+            health.SubstractHpValue(damage);
+            cameraShake.ShakeAll();
+        }
+
+        if (currentHp <= 0)
+        {
+            // 상대 플레이어 승리!!
+            FinishGame(false);
+            anotherPlayer.FinishGame(true);
+        }
+    }
+
+    void OnParrying(InputValue inputValue)
+    {
+        if (!GameManager.gameStarted) return;
+        if (cooldownPreset.parrying.IsCooldown) return;
+        if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
+        if (!currentAction.Equals(PlayerAction.NONE)) return;
+        SetAction(PlayerAction.PARRYING);
+    }
+
+    void OnDodge(InputValue inputValue)
+    {
+        if (!GameManager.gameStarted) return;
+        if (cooldownPreset.dodge.IsCooldown) return;
+        if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
+        if (!currentAction.Equals(PlayerAction.NONE)) return;
+        SetAction(PlayerAction.DODGE);
+    }
+
+    void OnAttack(InputValue inputValue)
+    {
+        if (!GameManager.gameStarted) return;
+        if (cooldownPreset.attack.IsCooldown) return;
+        if (anotherPlayer.CurrentAction.Equals(PlayerAction.ATTACK)) return;
+        if (!currentAction.Equals(PlayerAction.NONE)) return;
+
+        SetAction(PlayerAction.ATTACK);
+        gameObject.GetComponent<Image>().canvas.sortingOrder = 1;
+        anotherPlayer.gameObject.GetComponent<Image>().canvas.sortingOrder = 0;
+        anotherPlayer.TryDamagePlayer(playerStats.attackPower);
+    }
+
+    void SetAction(PlayerAction action)
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+        // 쿨타임 체크 및 애니메이션
+        if ((int)action <= 2)
+            actionChecker[(int)action] = false;
+        playerSprite.SetSprite(action);
+        coroutine = StartCoroutine(CanActionBefore(action));
+        switch (action)
+        {
+            case PlayerAction.PARRYING:
+                cooldownPreset.parrying.Play();
+                break;
+            case PlayerAction.DODGE:
+                cooldownPreset.dodge.Play();
+                break;
+            case PlayerAction.ATTACK:
+                cooldownPreset.attack.Play();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 일정 시간 이후 Action의 상태를 변경합니다.
+    /// </summary>
+    IEnumerator CanActionBefore(PlayerAction action)
+    {
+        switch (action)
+        {
+            case PlayerAction.ATTACK:
+                currentAction = PlayerAction.DELAY;
+                yield return new WaitForSeconds(playerStats.attackStartupTime);
+                break;
+            case PlayerAction.DODGE:
+                currentAction = PlayerAction.DELAY;
+                yield return new WaitForSeconds(playerStats.dodgeStartupTime);
+                break;
+            case PlayerAction.PARRYING:
+                currentAction = PlayerAction.DELAY;
+                yield return new WaitForSeconds(playerStats.parryStartupTime);
+                break;
+            default:
+                yield return null;
+                break;
+        }
+        // 현재 액션을 action으로 지정
+        currentAction = action;
+
+        coroutine = StartCoroutine(CanActionCoolTime(action));
+    }
+
+    /// <summary>
+    /// 일정 시간 이후 Action의 상태를 변경합니다.
+    /// </summary>
+    IEnumerator CanActionCoolTime(PlayerAction action)
+    {
+        switch (action)
+        {
+            case PlayerAction.ATTACK:
+                yield return new WaitForSeconds(playerStats.attackActive);
+                currentAction = PlayerAction.DELAY;
+                yield return new WaitForSeconds(playerStats.attackRecoveryTime);
+                break;
+            case PlayerAction.DODGE:
+                yield return new WaitForSeconds(playerStats.dodgeActive);
+                currentAction = PlayerAction.DELAY;
+                yield return new WaitForSeconds(playerStats.dodgeRecoveryTime);
+                break;
+            case PlayerAction.PARRYING:
+                yield return new WaitForSeconds(playerStats.parryActive);
+                currentAction = PlayerAction.DELAY;
+                yield return new WaitForSeconds(playerStats.parryRecoveryTime);
+                break;
+            case PlayerAction.KNOCKBACK:
+                yield return new WaitForSeconds(playerStats.knockbackRecoveryTime);
+                break;
+            default:
+                yield return null;
+                break;
+        }
+        currentAction = PlayerAction.NONE;
+        if ((int)action <= 2)
+            actionChecker[(int)action] = true;
+        playerSprite.SetSprite(currentAction);
+        coroutine = null;
+    }
+
+    public void FinishGame(bool isWinner)
+    {
+        // 승리 / 패배 모션 출력
+        if (!isWinner)
+        {
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+                coroutine = null;
+            }
+
+            currentAction = PlayerAction.DEFEAT;
+            playerSprite.SetSprite(currentAction);
+            return;
+        }
+
+        // 그리고 남은 로직은 패배 플레이어 로직에서 처리
+        // 이 스크립트 실행하는게 패배 플레이어
+        GameManager.gameStarted = false;
+
+        StartCoroutine(FinishGameAnime(isWinner));
+    }
+
+    private IEnumerator FinishGameAnime(bool isWinner)
+    {
+        winRound += 1;
+        anotherPlayer.roundVisualizer.SubstractRound();
+        bool isGameOver = winRound >= 2;
+
+        if (!isGameOver)
+            ko.Play(false);
+        else
+            ko.Play(true);
+
+        yield return new WaitUntil(() => currentAction == PlayerAction.NONE);
+
+        currentAction = PlayerAction.WIN;
+        playerSprite.SetSprite(currentAction);
+        yield return new WaitForSeconds(0.5f);
+
+        if (!isGameOver)
+        {
+            if (playerId == 1)
+            {
+                outro.Play(PlayerResult.PLAYER_A);
+            }
+            else if (playerId == 2)
+            {
+                outro.Play(PlayerResult.PLAYER_B);
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+            if (playerId == 1)
+            {
+                result.Play(PlayerResult.PLAYER_A);
+            }
+            else if (playerId == 2)
+            {
+                result.Play(PlayerResult.PLAYER_B);
+            }
+        }
+    }
+
+    public void ResetPlayer()
+    {
+        currentAction = PlayerAction.NONE;
+        playerSprite.SetSprite(currentAction);
+
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+
+        currentHp = maxHp;
+
+        actionChecker[0] = true;
+        actionChecker[1] = true;
+        actionChecker[2] = true;
+
+        actionCounter[0] = 0;
+        actionCounter[1] = 0;
+        actionCounter[2] = 0;
+        actionCounter[3] = 0;
+    }
+
+    public void InitializePlayer()
+    {
+        winRound = 0;
+        ResetPlayer();
+    }
+}
