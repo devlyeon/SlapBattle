@@ -29,6 +29,10 @@ public class RandomTitleText : MonoBehaviour
             story.gameObject.SetActive(true);
             story.ResetStory();
         }
+        else if (Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            Application.Quit();  
+        }
         else if (Keyboard.current.anyKey.wasPressedThisFrame && !story.gameObject.activeSelf)
         {
             IsPush = true;
