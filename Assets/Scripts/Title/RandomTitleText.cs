@@ -22,6 +22,8 @@ public class RandomTitleText : MonoBehaviour
 
     void Update()
     {
+        if (!IsPush)
+
         if (Keyboard.current.pKey.wasPressedThisFrame)
         {
             story.gameObject.SetActive(true);
@@ -29,8 +31,8 @@ public class RandomTitleText : MonoBehaviour
         }
         else if (Keyboard.current.anyKey.wasPressedThisFrame && !story.gameObject.activeSelf)
         {
+            IsPush = true;
             animator.ResetTrigger("End");
-            StopCoroutine(coroutine);
             animator.SetTrigger("Start");
             StartCoroutine(StartGame());
         }

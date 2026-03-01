@@ -18,11 +18,10 @@ public class StoryPrinter : MonoBehaviour
     [SerializeField] private List<string> data = new List<string>();
     private int currentPosition = 0;
     private bool isPrinting = false, isFinish = false;
-    private Animator animator;
+    [SerializeField] private Animator animator;
 
     void Start()
     {
-        if (gameObject.TryGetComponent(out Animator animator)) this.animator = animator;
         ResetStory();
     }
 
