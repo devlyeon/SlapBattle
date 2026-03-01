@@ -32,12 +32,15 @@ public class StaggerTokenVisualizer : MonoBehaviour
         _currentShiledCount = MAX_SHIELD_COUNT;
         _className = this.GetType().Name;
 
-        for (int i = 0; i < MAX_SHIELD_COUNT; i++)
+        for (int i = gameObject.transform.childCount; i < MAX_SHIELD_COUNT; i++)
         {
             StaggerToken staggerTokenObj = Instantiate(STRAGGER_TOKEN, gameObject.transform);
             SAVED_STRAGGER_TOKEN.Add(staggerTokenObj);
-            
-            SAVED_STRAGGER_TOKEN[i].Initialize();
+        }
+
+        for (int i = 0; i < gameObject.transform.childCount; i++)
+        {
+            gameObject.transform.GetChild(i).GetComponent<StaggerToken>().Initialize();
         }
     }
 

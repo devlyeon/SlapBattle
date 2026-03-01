@@ -4,11 +4,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RandomTitleText : MonoBehaviour
+public class RandomResultText : MonoBehaviour
 {
     [SerializeField] IntroDirection intro;
     [SerializeField] Animator animator;
-    [SerializeField] ResultDirection resultDirection;
 
     private Coroutine coroutine;
     private TMP_Text text;
@@ -22,24 +21,14 @@ public class RandomTitleText : MonoBehaviour
 
     void Update()
     {
-        if (!IsPush)
+        if(!IsPush)
+        if (Keyboard.current.anyKey.isPressed)
         {
-            if (Keyboard.current.anyKey.isPressed)
-            {
-                animator.ResetTrigger("End");
-                IsPush = true;
-                StopCoroutine(coroutine);
-                animator.SetTrigger("Start");
-                StartCoroutine(StartGame());
-            }
+            IsPush = true;
+            StopCoroutine(coroutine);
+            animator.SetTrigger("Start");
+            StartCoroutine(StartGame());
         }
-    }
-
-    public void Initialize()
-    {
-        animator.ResetTrigger("Start");
-        animator.SetTrigger("End");
-        IsPush = false;
     }
 
     IEnumerator RandomKey()
@@ -53,7 +42,6 @@ public class RandomTitleText : MonoBehaviour
 
     IEnumerator StartGame()
     {
-        resultDirection.Initialize();
         yield return new WaitForSeconds(1.0f);
         intro.Play();
     }

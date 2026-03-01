@@ -30,6 +30,11 @@ public class HealthBarHandler : MonoBehaviour
         _maxHP = PLAYER.MaxHp;
         _currentHP = _maxHP;
         _className = this.GetType().Name;
+
+        DELAYED_HEALTH_BAR.Initialize(_maxHP);
+        INSTANT_HEALTH_BAR.Initialize(_maxHP);
+
+        SetHealthBar(_maxHP);
     }
 
     /// <summary>

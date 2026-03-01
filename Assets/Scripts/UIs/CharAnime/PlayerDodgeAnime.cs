@@ -18,6 +18,7 @@ public class PlayerDodgeAnime : PlayerAnimeBase
     {
         if (_isPlaying)
         {
+            Stop();
             base.Initialize();
 
             _player.Position(
@@ -62,9 +63,7 @@ public class PlayerDodgeAnime : PlayerAnimeBase
         );
         yield return new WaitForSeconds(_recoveryTime);
 
-        // 초기화
         this.Initialize();
-        _isPlaying = false;
 
         ON_COMPLETE.Invoke();
     }

@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     {
         public Image aWin, bWin;
     }
-    
+
     [Header("Player Components")]
     [Tooltip("플레이어 구분을 위한 ID입니다. A는 1, B는 2로 설정해주시기 바랍니다.")]
     [SerializeField] private int playerId = 0;
@@ -43,8 +43,14 @@ public class Player : MonoBehaviour
     [SerializeField] private Player anotherPlayer;
     [Tooltip("게임 결과를 표시하기 위한 Player class입니다.")]
     [SerializeField] private CutSceneForWin cutSceneForWin;
+    [Tooltip("KO 연출을 표시하기 위한 KO class입니다.")]
+    [SerializeField] private KoDirection ko;
     [Tooltip("게임 결과를 표시하기 위한 OutroDirection class입니다.")]
     [SerializeField] private OutroDirection outro;
+    [Tooltip("게임 결과를 표시하기 위한 ResultDirection class입니다.")]
+    [SerializeField] private ResultDirection result;
+    [Tooltip("타격감을 위한 CameraShake class입니다.")]
+    [SerializeField] private CameraShake cameraShake;
 
     // 현재 Player의 action입니다.
     [SerializeField] private PlayerAction currentAction = PlayerAction.NONE;
@@ -53,6 +59,10 @@ public class Player : MonoBehaviour
     // Player의 체력입니다. maxHp는 체력의 최댓값, currentHp는 현재 체력값입니다.
     private int maxHp = 100, currentHp = 100;
     public int MaxHp => maxHp;
+
+    // Player의 이긴 라운드입니다.
+    private int winRound = 0;
+    public int WinRound => winRound;
 
     // 통계 및 상태 확인을 위한 값입니다.
     private bool[] actionChecker = { true, true, true }; // Parrying, Dodge, Attack -> PlayerAction과 동일
@@ -112,6 +122,7 @@ public class Player : MonoBehaviour
             actionCounter[(int)PlayerAction.KNOCKBACK]++;
             currentHp -= damage;
             health.SubstractHpValue(damage);
+            cameraShake.ShakeAll();
         }
 
         if (currentHp <= 0)
@@ -158,7 +169,8 @@ public class Player : MonoBehaviour
         // 현재 액션을 action으로 지정
         currentAction = action;
         playerSprite.SetSprite(currentAction);
-        if (coroutine != null) {
+        if (coroutine != null)
+        {
             StopCoroutine(coroutine);
             coroutine = null;
         }
@@ -209,28 +221,93 @@ public class Player : MonoBehaviour
     public void FinishGame(bool isWinner)
     {
         // 승리 / 패배 모션 출력
-        if (isWinner) {
-            currentAction = PlayerAction.WIN;
+        if (!isWinner)
+        {
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+                coroutine = null;
+            }
+
+            currentAction = PlayerAction.DEFEAT;
             playerSprite.SetSprite(currentAction);
             return;
         }
-        currentAction = PlayerAction.DEFEAT;
-        playerSprite.SetSprite(currentAction);
 
         // 그리고 남은 로직은 패배 플레이어 로직에서 처리
         // 이 스크립트 실행하는게 패배 플레이어
         GameManager.gameStarted = false;
 
-        outro.gameObject.SetActive(true);
-        if (playerId == 1)
+        StartCoroutine(FinishGameAnime(isWinner));
+    }
+
+    private IEnumerator FinishGameAnime(bool isWinner)
+    {
+        winRound += 1;
+        bool isGameOver = winRound >= 2;
+
+        if (!isGameOver)
+            ko.Play(false);
+        else
+            ko.Play(true);
+
+        yield return new WaitUntil(() => currentAction == PlayerAction.NONE);
+
+        currentAction = PlayerAction.WIN;
+        playerSprite.SetSprite(currentAction);
+        yield return new WaitForSeconds(0.5f);
+
+        if (!isGameOver)
         {
-            //outro.Play(PlayerResult.PLAYER_B);
-            cutSceneForWin.bWin.gameObject.SetActive(true);
+            if (playerId == 1)
+            {
+                outro.Play(PlayerResult.PLAYER_A);
+            }
+            else if (playerId == 2)
+            {
+                outro.Play(PlayerResult.PLAYER_B);
+            }
         }
-        else if (playerId == 2)
+        else
         {
-            //outro.Play(PlayerResult.PLAYER_A);
-            cutSceneForWin.aWin.gameObject.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            if (playerId == 1)
+            {
+                result.Play(PlayerResult.PLAYER_A);
+            }
+            else if (playerId == 2)
+            {
+                result.Play(PlayerResult.PLAYER_B);
+            }
         }
+    }
+
+    public void ResetPlayer()
+    {
+        currentAction = PlayerAction.NONE;
+        playerSprite.SetSprite(currentAction);
+
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            coroutine = null;
+        }
+
+        currentHp = maxHp;
+
+        actionChecker[0] = true;
+        actionChecker[1] = true;
+        actionChecker[2] = true;
+
+        actionCounter[0] = 0;
+        actionCounter[1] = 0;
+        actionCounter[2] = 0;
+        actionCounter[3] = 0;
+    }
+
+    public void InitializePlayer()
+    {
+        winRound = 0;
+        ResetPlayer();
     }
 }

@@ -28,12 +28,6 @@ public class IntroDirection : MonoBehaviour
         this.Initialize();
     }
 
-    private void Start()
-    {
-        if (CanExecute())
-            this.Play();
-    }
-
     /// <summary>
     /// 이 클래스 내부의 변수들을 초기화
     /// </summary>

@@ -2,14 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerParryAnime : PlayerAnimeBase
+public class PlayerDefeatAnime : PlayerAnimeBase
 {
     [Header("필수 사전 할당")]
     [SerializeField] private DirectionUI _player;
 
     [Header("수치 사전 설정")]
     [SerializeField] private float _startUpTime;
-    [SerializeField] private float _recoveryTime;
 
     /// <summary>
     /// 이 클래스 내부의 변수들을 초기화
@@ -38,7 +37,7 @@ public class PlayerParryAnime : PlayerAnimeBase
     {
         _isPlaying = true;
 
-        // 선딜
+        // 후딜
         MOTHER_CANVAS.sortingOrder = 1;
         _player.Image(SPRITES_LIBRARY[0]);
         _player.Area(
@@ -47,23 +46,20 @@ public class PlayerParryAnime : PlayerAnimeBase
         yield return null;
 
         _player.Position(
-            EaseType.OutQuart, _startUpTime, new Vector3(Reposition(0f), 0f, 0f), new Vector3(Reposition(-300f), -45f, 0f)
+            EaseType.OutQuart, _startUpTime / 2, new Vector3(Reposition(-60f), 0f, 0f), new Vector3(Reposition(-140f), 40f, 0f)
         );
         _player.Rotation(
-            EaseType.OutQuart, _startUpTime, new Vector3(0f, 0f, Reposition(0f)), new Vector3(0f, 0f, Reposition(15f))
+            EaseType.OutQuart, _startUpTime / 2, new Vector3(0f, 0f, Reposition(-5f)), new Vector3(0f, 0f, Reposition(0f))
         );
-        yield return new WaitForSeconds(_startUpTime);
+        yield return new WaitForSeconds(_startUpTime / 2);
 
-        // 후딜
         _player.Position(
-            EaseType.InQuart, _recoveryTime, new Vector3(Reposition(-300f), -45f, 0f), new Vector3(Reposition(0f), 0f, 0f)
+            EaseType.InQuart, _startUpTime / 2, new Vector3(Reposition(-140f), 40f, 0f), new Vector3(Reposition(-220f), 0f, 0f)
         );
         _player.Rotation(
-            EaseType.InQuart, _recoveryTime, new Vector3(0f, 0f, Reposition(15f)), new Vector3(0f, 0f, Reposition(0f))
+            EaseType.InQuart, _startUpTime / 2, new Vector3(0f, 0f, Reposition(0f)), new Vector3(0f, 0f, Reposition(5f))
         );
-        yield return new WaitForSeconds(_recoveryTime);
-
-        this.Initialize();
+        yield return new WaitForSeconds(_startUpTime / 2);
 
         ON_COMPLETE.Invoke();
     }

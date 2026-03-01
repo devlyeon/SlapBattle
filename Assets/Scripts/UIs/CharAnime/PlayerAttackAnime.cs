@@ -20,6 +20,7 @@ public class PlayerAttackAnime : PlayerAnimeBase
     {
         if (_isPlaying)
         {
+            Stop();
             base.Initialize();
 
             _player.Position(
@@ -90,7 +91,6 @@ public class PlayerAttackAnime : PlayerAnimeBase
 
         // 초기화
         this.Initialize();
-        _isPlaying = false;
 
         ON_COMPLETE.Invoke();
     }

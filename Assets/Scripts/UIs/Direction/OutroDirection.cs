@@ -13,18 +13,14 @@ public class OutroDirection : MonoBehaviour
     [Header("필수 사전 할당")]
     [SerializeField] private UnityEvent ON_PLAY;
     [SerializeField] private UnityEvent ON_COMPLETE;
-    [SerializeField] private UnityEvent ON_WINNER;
-    [SerializeField] private UnityEvent ON_PLAYER;
+    [SerializeField] private UnityEvent ON_DESTORY;
 
-    [SerializeField] private TMP_Text PLAYER_TEXT;
-    [SerializeField] private TMP_Text WINNER_TEXT;
+    [SerializeField] private Sprite PLAYER_A_BANNER;
+    [SerializeField] private Sprite PLAYER_B_BANNER;
 
-    [SerializeField] private DirectionUI WINNER_PANEL;
-    [SerializeField] private DirectionUI PLAYER_TEXT_DIRECTION;
-    [SerializeField] private DirectionUI WINNER_TEXT_DIRECTION;
-
-    [SerializeField] private string _nameA = "BOOGIE";
-    [SerializeField] private string _nameB = "SANGZZI";
+    [SerializeField] private DirectionUI DARK_DISSOLVE;
+    [SerializeField] private DirectionUI WINNER_BANNER;
+    [SerializeField] private DirectionUI DARK_TRANSITION;
 
     [Header("디버깅")]
     private bool _isPlaying = false;
@@ -49,9 +45,9 @@ public class OutroDirection : MonoBehaviour
 
         _isPlaying = false;
 
-        WINNER_PANEL.Alpha(EaseType.Instant, 0f, 0f, 0f);
-        WINNER_TEXT_DIRECTION.Alpha(EaseType.Instant, 0f, 0f, 0f);
-        PLAYER_TEXT_DIRECTION.Alpha(EaseType.Instant, 0f, 0f, 0f);
+        DARK_DISSOLVE.Alpha(EaseType.Instant, 0f, 0f, 0f);
+        WINNER_BANNER.Alpha(EaseType.Instant, 0f, 0f, 0f);
+        DARK_TRANSITION.Alpha(EaseType.Instant, 0f, 0f, 0f);
     }
 
     /// <summary>
@@ -66,76 +62,40 @@ public class OutroDirection : MonoBehaviour
         ON_PLAY.Invoke();
 
         if (result.Equals(PlayerResult.PLAYER_A))
-            StartCoroutine(PlayerAOutroDirection());
+            WINNER_BANNER.Image(PLAYER_A_BANNER);
         else if (result.Equals(PlayerResult.PLAYER_B))
-            StartCoroutine(PlayerBOutroDirection());
-        else if (result.Equals(PlayerResult.DRAW))
-            StartCoroutine(PlayerAOutroDirection());
+            WINNER_BANNER.Image(PLAYER_B_BANNER);
+
+        StartCoroutine(PlayerOutroDirection());
     }
 
-    private IEnumerator PlayerAOutroDirection()
+    private IEnumerator PlayerOutroDirection()
     {
         _isPlaying = true;
 
-        WINNER_PANEL.Anchor(new Vector2(1f, 1f), new Vector2(1f, 0f));
-        PLAYER_TEXT_DIRECTION.Anchor(new Vector2(1f, 0f), new Vector2(0f, 0f));
-        WINNER_TEXT_DIRECTION.Anchor(new Vector2(1f, 0f), new Vector2(1f, 0f));
+        DARK_DISSOLVE.Alpha(EaseType.Linear, 0.1f, 0f, 1f);
 
-        PLAYER_TEXT.text = _nameA;
+        // 락 앤 롤!
+        WINNER_BANNER.Move(EaseType.OutSine, 0.75f, "x", -1080f, -95f);
+        WINNER_BANNER.Alpha(EaseType.Linear, 0.75f, 0f, 1f);
+        yield return new WaitForSeconds(0.75f);
 
-        PLAYER_TEXT.alignment = TextAlignmentOptions.Right;
-        WINNER_TEXT.alignment = TextAlignmentOptions.Left;
+        WINNER_BANNER.Move(EaseType.Linear, 2f, "x", -95f, 95f);
+        yield return new WaitForSeconds(2f);
 
-        // PLAYER...
-        ON_WINNER.Invoke();
-        WINNER_PANEL.Move(EaseType.InCubic, 0.5f, "x", 650f, 545f);
-        WINNER_PANEL.Alpha(EaseType.Linear, 0.5f, 0f, 1f);
-        yield return new WaitForSeconds(0.25f);
-
-        PLAYER_TEXT_DIRECTION.Alpha(EaseType.Linear, 0.25f, 0f, 1f);
-        yield return new WaitForSeconds(0.5f);
-
-        // WIN!!!
-        ON_PLAYER.Invoke();
-        WINNER_TEXT_DIRECTION.Move(EaseType.InCubic, 0.5f, "x", -425f, -520f);
-        WINNER_TEXT_DIRECTION.Alpha(EaseType.Linear, 0.5f, 0f, 1f);
-        yield return new WaitForSeconds(0.5f);
+        WINNER_BANNER.Move(EaseType.OutSine, 0.75f, "x", 95f, 1080f);
+        WINNER_BANNER.Alpha(EaseType.Linear, 0.75f, 1f, 0f);
+        DARK_TRANSITION.Alpha(EaseType.Linear, 0.1f, 0f, 1f);
+        yield return new WaitForSeconds(0.75f);
 
         ON_COMPLETE.Invoke();
+        DARK_DISSOLVE.Alpha(EaseType.Instant, 0f, 0f, 0f);
+        yield return new WaitForSeconds(0.5f);
 
-        _isPlaying = false;
-    }
-
-    private IEnumerator PlayerBOutroDirection()
-    {
-        _isPlaying = true;
-
-        WINNER_PANEL.Anchor(new Vector2(0f, 1f), new Vector2(0f, 0f));
-        PLAYER_TEXT_DIRECTION.Anchor(new Vector2(1f, 0f), new Vector2(0f, 0f));
-        WINNER_TEXT_DIRECTION.Anchor(new Vector2(0f, 0f), new Vector2(0f, 0f));
-
-        PLAYER_TEXT.text = _nameB;
-
-        PLAYER_TEXT.alignment = TextAlignmentOptions.Left;
-        WINNER_TEXT.alignment = TextAlignmentOptions.Right;
-
-        // PLAYER...
-        ON_WINNER.Invoke();
-        WINNER_PANEL.Move(EaseType.InCubic, 0.5f, "x", -650f, -545f);
-        WINNER_PANEL.Alpha(EaseType.Linear, 0.5f, 0f, 1f);
+        DARK_TRANSITION.Alpha(EaseType.Linear, 0.1f, 1f, 0f);
         yield return new WaitForSeconds(0.25f);
 
-        PLAYER_TEXT_DIRECTION.Alpha(EaseType.Linear, 0.25f, 0f, 1f);
-        yield return new WaitForSeconds(0.5f);
-
-        // WIN!!!
-        ON_PLAYER.Invoke();
-        WINNER_TEXT_DIRECTION.Move(EaseType.InCubic, 0.5f, "x", 425f, 520f);
-        WINNER_TEXT_DIRECTION.Alpha(EaseType.Linear, 0.5f, 0f, 1f);
-        yield return new WaitForSeconds(0.5f);
-
-        ON_COMPLETE.Invoke();
-
+        ON_DESTORY.Invoke();
         _isPlaying = false;
     }
 
@@ -143,33 +103,21 @@ public class OutroDirection : MonoBehaviour
     {
         bool isValid = true;
 
-        if (WINNER_TEXT == null)
+        if (DARK_DISSOLVE == null)
         {
-            Debug.LogError($"{_className}: WINNER_TEXT가 할당되지 않았습니다!");
+            Debug.LogError($"{_className}: DARK_DISSOLVE가 할당되지 않았습니다!");
             isValid = false;
         }
 
-        if (PLAYER_TEXT == null)
+        if (WINNER_BANNER == null)
         {
-            Debug.LogError($"{_className}: PLAYER_TEXT가 할당되지 않았습니다!");
+            Debug.LogError($"{_className}: WINNER_BANNER가 할당되지 않았습니다!");
             isValid = false;
         }
 
-        if (WINNER_PANEL == null)
+        if (DARK_TRANSITION == null)
         {
-            Debug.LogError($"{_className}: WINNER_PANEL가 할당되지 않았습니다!");
-            isValid = false;
-        }
-
-        if (PLAYER_TEXT_DIRECTION == null)
-        {
-            Debug.LogError($"{_className}: PLAYER_TEXT_DIRECTION가 할당되지 않았습니다!");
-            isValid = false;
-        }
-
-        if (WINNER_TEXT_DIRECTION == null)
-        {
-            Debug.LogError($"{_className}: WINNER_TEXT_DIRECTION가 할당되지 않았습니다!");
+            Debug.LogError($"{_className}: DARK_TRANSITION가 할당되지 않았습니다!");
             isValid = false;
         }
 
