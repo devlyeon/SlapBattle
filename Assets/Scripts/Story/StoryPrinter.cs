@@ -12,6 +12,7 @@ public class StoryPrinter : MonoBehaviour
     [Header("Text Objects")]
     [SerializeField] private TMP_Text scriptText;
     [SerializeField] private TMP_Text dpText;
+    [SerializeField] private AudioSource source;
 
     private Coroutine coroutine;
 
@@ -62,6 +63,7 @@ public class StoryPrinter : MonoBehaviour
             if (currentPosition == 6)
             {
                 scriptText.text = "";
+                source.Play();
                 dpText.gameObject.SetActive(true);
                 animator.SetTrigger("DP");
                 StartCoroutine(DPlusAnimDelay());
