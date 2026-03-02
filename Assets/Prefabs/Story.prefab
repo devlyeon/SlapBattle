@@ -307,9 +307,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4012965700670081958}
   - {fileID: 2026122141638675996}
   - {fileID: 2600246877354192402}
-  - {fileID: 4012965700670081958}
   m_Father: {fileID: 2415391553138718118}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -407,6 +407,7 @@ MonoBehaviour:
     \uC0C1\uCC0C... \uB458\uC758 \uAC00\uC2B4\uC740 \uC815\uB9D0 \uC6C5\uC7A5\uD574\uC84C\uC5B4\uC694."
   - "\uB458\uC740 \uACB0\uAD6D 1\uD559\uB144 1\uD559\uAE30\uC5D0 D+\uC774\uB780 \uC804\uC124\uC744
     \uC138\uC6B0\uAC8C \uB418\uB294\uB370..."
+  animator: {fileID: 0}
 --- !u!1 &7441346383607471341
 GameObject:
   m_ObjectHideFlags: 0
